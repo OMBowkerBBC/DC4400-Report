@@ -1,0 +1,24 @@
+@startuml Schedule Update
+title Schedule Update
+
+start
+  :Receive update notification;
+  :Get item to update from data store;
+  if (Item in store) then (yes)
+    :Populate redis store with catalogue data;
+    floating note left: In separate diagram
+    :Fetch catalogue data for transform from redis;
+    :Transform to partner facing output;
+    :Calculate changes;
+    if (Changes occurred) then (yes)
+      :Check if schedule broadcasts have changed;
+      floating note left: In separate diagram
+      :Update schedule in redis store;
+    endif
+    end
+  else (no)
+    :Log out missing redis item;
+    end
+  endif
+
+@enduml

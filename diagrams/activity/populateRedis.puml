@@ -1,0 +1,27 @@
+@startuml Populate Catalogue Items
+title Populate Catalogue Items
+
+start
+  :Attempt to fetch episode from schedule redis;
+  if (Episode in schedule store) then (yes)
+    :Check if schedule is referenced in episode;
+    if (Not referenced in episode data) then (yes)
+      :Append schedule to episodes broadcast_list; 
+    endif
+    :Store updated episode in schedule store;
+    :Get parents;
+    floating note left: Same as episode fetching without broadcast_list logic
+  else (no)
+    :Attempt to fetch episode from catalogue redis;
+    if (Episode in catalogue store) then (yes)
+      :Create broadcast_list with schedule reference;
+      :Copy episode to schedule store;
+      :Get parents;
+      floating note right: Same as episode fetching without broadcast_list logic
+    else (no)
+      :Create stub episode referencing schedule;
+      end
+    endif
+  endif
+
+@enduml

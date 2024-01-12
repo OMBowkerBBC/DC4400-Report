@@ -1,0 +1,27 @@
+@startuml Broadcast Changed
+title Broadcast Changed
+
+start
+  :Attempt to fetch old broadcasts from redis store;
+  if (Item in store) then (yes)
+    :Calculate broadcast differences;
+    if (Difference in broadcasts) then (yes)
+      repeat
+        :Fetch broadcasts episode from redis store;
+        :Filter out changed schedule reference from broadcast_list;
+        if (Episode has no schedule references) then (yes)
+          :Remove episode from redis store;
+        else (no)
+          :Remove schedule being deleted from episodes broadcast_list;
+        endif
+      repeat while (Changes left to process) is (yes) not (no);
+      end
+    else (no)
+      end
+    endif
+  else (Schedule is new)
+    :Log out that schedule is new;
+    end
+  endif
+
+@enduml

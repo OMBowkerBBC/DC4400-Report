@@ -1,0 +1,53 @@
+\documentclass{report}
+
+\usepackage[tc]{titlepic}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{textcomp}
+\usepackage[Rejne]{fncychap}
+\usepackage{pdfpages}
+
+\renewcommand{\chaptername}{}
+\captionsetup{justification=centering}
+
+\title{%
+  DC4400 Project Report \\
+  \vspace{0.2cm}
+  \small Processing of schedule updates/changes
+}
+
+% \titlepic{\includegraphics[width=0.8\textwidth]{assets/title.png}}
+
+\author{Oliver Matthew Bowker (220263618)}
+\date{\today}
+
+\begin{document}
+
+  \maketitle
+
+  \newpage
+
+  \tableofcontents
+  \newpage
+
+  \listoffigures
+  \newpage
+
+  \listoftables
+
+  \newpage
+  % \includepdf[pages=-]{documents/initialDesignDoc.pdf}
+  \input{sections/summary.tex}
+  \input{sections/introduction.tex}
+  \input{sections/background.tex}
+  \input{sections/work.tex}
+  \input{sections/outputs.tex}
+  \input{sections/future.tex}
+  \input{sections/conclusion.tex}
+  \input{sections/references.tex}
+  \input{sections/appendix.tex}
+
+\end{document}

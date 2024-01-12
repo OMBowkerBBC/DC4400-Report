@@ -1,0 +1,29 @@
+@startuml Schedule Delete
+title Schedule Delete
+
+start
+  :Get schedule to delete from store;
+  if (Item in store) then (yes)
+    :Compile list episode pids in schedule;
+    repeat
+      :Get episode from redis store;
+      if (Episode in store) then (yes)
+        :Filter episodes related schedules to schedule being deleted;
+        if (Episode no longer referenced by any schedules) then (yes)
+          :Remove episode from redis store;
+        else (no)
+          :Remove schedule being deleted from episodes list;
+        endif
+      else (no)
+        :Log out missing redis item;
+      endif
+    repeat while (Episodes to process) is (yes) not (no);
+
+    :Remove schedule from store;
+    end
+  else (no)
+    :Log out missing redis item;
+    end
+  endif
+
+@enduml

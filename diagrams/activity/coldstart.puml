@@ -1,0 +1,46 @@
+@startuml Coldstart
+title Coldstart
+
+start
+  partition Delta Coldstart {
+    :Disable delta lambda;
+    :Purge SQS queue of notifications;
+  }
+  :Fetch all schedules in redis store;
+
+  partition Delta Coldstart {
+    :Populate redis store with catalogue data;
+    floating note left: In separate diagram
+  }
+  :Fetch all catalogue data for schedule transform;
+
+  repeat 
+    :Transform schedule;
+  repeat while (Schedules left to transform) is (yes) not (no)
+
+  fork
+    :Fetch all schedules ids currently in redis;
+    :Delete schedules in redis that are not in the newly transformed data;
+    repeat 
+      :Check if changes have occurred;
+      if (Schedule has changed or is new) then (yes)
+        :Write transformed schedule to redis store;
+      endif
+    repeat while (Transformed schedules to process) is (yes) not (no)
+  fork again
+    :Fetch all service ids currently in redis;
+    :Delete services in redis that are not in the newly transformed data;
+    repeat 
+      :Check if changes have occurred;
+      if (Schedule has changed or is new) then (yes)
+        :Write transformed service to redis store;
+      endif
+    repeat while (Transformed services to process) is (yes) not (no)
+  end fork
+
+  partition Delta Coldstart {
+    :Reenable delta lambda;
+  }
+
+  end
+@enduml

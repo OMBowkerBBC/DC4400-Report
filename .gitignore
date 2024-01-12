@@ -1,0 +1,16 @@
+.vscode
+*.docx
+/diagrams/activity/*.png
+/diagrams/sequence/*.png
+todo
+~$main.pdf
+.DS_Store
+
+# Latex artifacts
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+
