@@ -1,5 +1,5 @@
-# Portfolio 
-This repository contains the plans for my project.
+# Report 
+This repository contains the assets and documents that my final MSC report consist of.
 
 ### Latex
 The report is written using LaTeX. A PDF file is included in the repo, however if you want to re-render it you should run:
