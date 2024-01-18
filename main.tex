@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass{article}
 
 \usepackage[tc]{titlepic}
 \usepackage{graphicx}
@@ -7,10 +7,7 @@
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{textcomp}
-\usepackage[Rejne]{fncychap}
-\usepackage{pdfpages}
 
-\renewcommand{\chaptername}{}
 \captionsetup{justification=centering}
 
 \title{%
@@ -19,7 +16,7 @@
   \small Processing of schedule updates/changes
 }
 
-% \titlepic{\includegraphics[width=0.8\textwidth]{assets/title.png}}
+\titlepic{\includegraphics[width=0.3\textwidth]{assets/aston.png}}
 
 \author{Oliver Matthew Bowker (220263618)}
 \date{\today}
@@ -39,7 +36,6 @@
   \listoftables
 
   \newpage
-  % \includepdf[pages=-]{documents/initialDesignDoc.pdf}
   \input{sections/summary.tex}
   \input{sections/introduction.tex}
   \input{sections/background.tex}
