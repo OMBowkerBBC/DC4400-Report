@@ -4,20 +4,42 @@
   to peoples homes across the UK. However this old way of broadcasting, sending out airwaves on a certain frequency to an antenna, is becoming 
   less popular in the modern age of the internet. A study done by Ofcom [3] showed that people
   \textit{'watched on average about 16\% less broadcast TV between 2019 ... and 2022'} [4], with viewing \textit{'decreasing by 47\%'} [4] between ages
-  16-24. In addition to this another study carried out by media analyst firm Ampere found that in 2021 37\% of people claimed to watch no linear TV,
+  16-24. In addition another study carried out by media analyst firm Ampere found that in 2021 37\% of people claimed to watch no linear TV,
   this increased to 45\% by 2023 [5].
   
   This fall correlates with the significant rise in internet enabled TVs in the home, with statista finding that 
   \textit{'In 2014 just 11 percent of households in the UK owned a Smart TV, whereas, in 2023, nearly 74 percent of households reported owning a Smart TV.'} [6].
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{assets/smartTvGrowth.png}
+    \caption{Bar chart showing growth of smart TVs in UK homes [6] \textit{Created with Line Graph Maker} [7]}
+    \label{fig:smartTvGrowth}
+  \end{figure}
+
   Some of these devices still support OTA broadcasts, however devices like the Amazon Fire TV stick and Googles Chromecast, are purely internet
-  based; However they do offer a \textit{'guide/epg'} section with Amazon having a development guide [7] on how to integrate with it.
+  based; However they do offer a \textit{'guide/epg'} section with Amazon having a development guide [8] on how to integrate with it.
   Director general of the BBC, Tim Davie, in a 2022 stated \textit{'The vision is simple: from today we are going to move decisively to 
-  a digital-first BBC'} [8], giving more priority on these new forms of media. 
+  a digital-first BBC'} [9], putting more organisational focus on these new forms of media. 
   
   This report will discuss an upgrade carried out to the BBCs \textit{'off-product'} schedules system, responsible for delivering up to date schedules to
-  companies such as Freeview, Amazon and more. First I will give some background on the project, this will include research done, the starting
-  architecture of the system and how it aligns with the BBCs and teams OKRs [9]. Following that, I will discuss the work that was done, this will 
-  include the planning, writing, testing and deployment stages of the project, discussing findings along the way. Then a short section on the final product 
-  that has been produced followed by a final discussion of future upgrades to the system that could be carried out.
+  partners such as Freeview, Amazon and more. First I will give some background on the project, where I will discuss topics including database
+  management in parallel/multi-threaded systems, cloud computing and the power of microservices and strategies to protect live code systems in a CI/CD
+  environment. I will also give some background on the starting architecture of the system and how the changes align with the BBCs and teams OKRs [10].
+  
+  \newpage
 
+  Following that, I will discuss the work that was done. This will be broken down into 5 sections that align with our teams ways of working flow.
+  \begin{enumerate}
+    \item Requirements and epic creation
+    \item Investigation and Spike
+    \item Slicing and task/ticket creation
+    \item Development of software
+    \item Releasing of software
+  \end{enumerate}
+
+  I will then talk about the outputs of the project. Theses will include burn-up charts for the projects, dashboards created, documentation of the final 
+  architecture and a description of the exact final product.
+
+  Finally I will discuss potential improvements for future iterations. This will range between small code changes to a complete re-architecture of the system.
 \newpage
