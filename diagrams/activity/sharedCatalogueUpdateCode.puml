@@ -1,0 +1,24 @@
+@startuml Catalogue update triggered schedule updates
+title Catalogue update triggered schedule updates
+
+start
+  if (Multiple schedule referenced) then (yes)
+    :Pop first schedule off list;
+    :Process schedule;
+    if (Schedule update ocurrs) then (yes)
+      floating note left: This can be a Promise.all
+      repeat
+        :Pop schedule off list;
+        :Process schedule; 
+      repeat while (Schedules left to process) is (yes) not (no)
+      end
+    else (no)
+      :Don't update anymore schedules;
+      end
+    endif
+  else (no)
+    :Update single schedule as normal;
+    end
+  endif
+
+@enduml
