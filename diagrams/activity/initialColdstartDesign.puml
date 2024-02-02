@@ -1,5 +1,5 @@
-@startuml Coldstart
-title Coldstart
+@startuml Intial Coldstart Design
+title Initial Coldstart Design
 
 start
   partition Delta Coldstart {
