@@ -1,0 +1,15 @@
+@startuml Optimistic Locking
+title Optimistic Locking
+
+start
+  repeat
+    :Fetch item to update from store;
+    :Process update changes;
+
+    :Re-fetch item updated in store;
+  repeat while (Item matches initial state?) is (no) not (yes)
+
+  :Write updated item to redis;
+
+end
+@enduml

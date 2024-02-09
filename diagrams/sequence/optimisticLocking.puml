@@ -1,0 +1,23 @@
+@startuml Optimistic Locking
+entity "Schedule Ingester" as ingester
+entity "Schedule Generator" as sg
+database Store as db
+
+ingester -> sg : Send update notification
+sg -> db : Request item to update from store
+sg <-- db : Return item to update
+sg -> sg : Process changes
+
+sg -> db : Request item to update from store
+sg <-- db : Return item to update
+
+group #Pink Change has occured during processing [loop until no change interferes]
+  sg -> sg : Process changes
+
+  sg -> db : Request item to update from store
+  sg <-- db : Return item to update
+end
+
+sg -> db : Write updated data
+
+@enduml
