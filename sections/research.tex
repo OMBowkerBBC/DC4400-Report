@@ -21,7 +21,7 @@
   catalogue pipelines, meaning the array could easily become incorrect/polluted. Sharing memory in a threaded/parallelised system is a well known 
   challenge and you need to know when it's safe to update/edit this memories value (https://homes.cs.washington.edu/~djg/teachingMaterials/spac/sophomoricParallelismAndConcurrency.pdf).
   This is also known as being thread safe which can be described as \textit{'different threads can access the same resources without exposing erroneous 
-  behavior or producing unpredictable results'} (Ugarte, A, 2024).
+  behavior or producing unpredictable results'} (Ugarte, 2024).
 
   \begin{figure}[H]
     \centering
@@ -53,7 +53,7 @@
     \begin{figure}[H]
       \centering
       \includegraphics[width=8cm]{assets/pipelineOrdering.png}
-      \caption{How redis pipelines don't guarantee sequential execution (Eyng, R, 2019).}
+      \caption{How redis pipelines don't guarantee sequential execution (Eyng, 2019).}
       \label{fig:pipelineOrdering}
     \end{figure}
     \item \textbf{Transactions} - Transactions are very similar to pipelines, however guarantee that the transactions commands are not interrupted by another
@@ -70,10 +70,10 @@
   the schedule generator. These were types of store/database locking mechanisms.
 
   \begin{itemize}
-    \item \textbf{Pessimistic Locking} - This method \textit{'assumes that access to shared memory will be contended'} (Weston, T, 2011) and
+    \item \textbf{Pessimistic Locking} - This method \textit{'assumes that access to shared memory will be contended'} (Weston, 2011) and
     acquires a lock on the data to be edited. Any other client/connection attempting to edit this data must wait until this lock is released to update
-    the data (Thornton, G, 2001). This can lead to issues such as deadlock which is when two clients are both awaiting on another clients lock to 
-    be released. This can end up with both clients being stuck in a endless cycle of waiting for each other (Thornton, G, 2001; Apache Software Foundation, 2013).
+    the data (Thornton, 2001). This can lead to issues such as deadlock which is when two clients are both awaiting on another clients lock to 
+    be released. This can end up with both clients being stuck in a endless cycle of waiting for each other (Thornton, 2001; Apache Software Foundation, 2013).
 
     \begin{figure}[H]
       \centering
@@ -83,11 +83,11 @@
     \end{figure}
 
     There is also a situation where a client locks a piece of data and for one reason or another halts, this would cause needless delay, when a timeout is 
-    specified, if a timeout is not specified then this object would be locked from changes indefinitely (Thornton, G, 2001).
+    specified, if a timeout is not specified then this object would be locked from changes indefinitely (Thornton, 2001).
 
-    \item \textbf{Optimistic Locking} - This method \textit{'relies on end-of-transaction validation'} (Graefe, G, 2016). Unlike its counterpart
+    \item \textbf{Optimistic Locking} - This method \textit{'relies on end-of-transaction validation'} (Graefe, 2016). Unlike its counterpart
     (pessimistic locking) it does not lock the record that is being updated. Instead before the new data is written, the original data is checked against 
-    the current data stored (Thornton, G, 2001). If this data doesn't match then a change has occurred during processing and the new data to be written 
+    the current data stored (Thornton, 2001). If this data doesn't match then a change has occurred during processing and the new data to be written 
     must be re-calculated with the new changes.
 
     \begin{figure}[H]
@@ -109,9 +109,9 @@
    
   \subsection{Agile and CI/CD}
   As a team we follow an agile approach to software development, more accurately we follow a kanban approach. The kanban methodology 
-  \textit{'focuses more on monitoring and improving workflows'} (Heil, C, 2022) and doesn't use concepts such as sprints from scrum (Rehkopf, M, 2024). 
-  Instead software created using the kanban approach is deployed/released when it's done (Rehkopf, M, 2024) and uses a kanban board where tickets move 
-  across columns depicting where they are currently at in development (Mauvius Group Inc, 2021).
+  \textit{'focuses more on monitoring and improving workflows'} (Heil, C, 2022) and doesn't use concepts such as sprints from scrum (Rehkopf, 2024). 
+  Instead software created using the kanban approach is deployed/released when it's done (Rehkopf, 2024) and uses a kanban board where tickets move 
+  across columns depicting where they are currently at in development cycle (Mauvius Group Inc, 2021).
 
   \begin{figure}[H]
     \centering
@@ -123,22 +123,53 @@
   This workflow fit's in well with Continuous Integrations and Continuous Deployment (CI/CD). As a team we release/build all our own code to 
   multiple environments using Jenkins declarative pipelines (Jenkins, 2024).
 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{assets/pipeline.drawio.png}
+    \caption{General pipeline flow.}
+    \label{fig:pipeline}
+  \end{figure}
+
+  Having these well defined deployment pipelines makes deploying new code easy and helps manage deployments across multiple environments as configuration 
+  can be built in to the pipeline (Rodriguez, et al, 2016). This approach allows bugs to be caught faster than when using 
+  a \textit{'big-bang'} approach, as the bug is likely to be with a single new change (Department of Defence, 2021).
+  The additional testing also gives more confidence in the code deployed and rollbacks are made extremely simple due to version control management.
+
+  \vspace{0.2cm}
+
+  There are of course some downsides to CI/CD, whenever an external platform, Jenkins in our case, is being used this opens up a new attack vector (NSA, 2023).
+  OWASP keeps a list of some of these threats (OWASP Foundation, 2023), however they mostly comprise of poor 
+  authentication to CI/CD systems and attacks by people who already have access to source code and the CI/CD platform itself (employees).
+
+  Other issues include maintenance of the pipelines code/infrastructure and potential complexity (Wikström, 2019),
+  this can be especially true when pipelines call other processes. 
+
+  Code quality can become an issue, with technical debt increasing due to the encouraged continuous deployment of new software (Rodriguez, et al, 2016) 
+  and more bugs also appear to occur. One study showed that the number of bugs actually increased when using CI/CD (Fairbanks, Tharigonda, Eisty, 2023).
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|p{0.3\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|}
+      \hline
+      & CI/CD & No CI/CD \\ \hline
+      Github average issues & 135.38 & 57.33 \\ \hline
+      Gitlab average issues & 52.04 & 17.68 \\ \hline
+    \end{tabular}
+    \caption{Table from study showing difference in issues found between approaches (Fairbanks, Tharigonda, Eisty, 2023).}
+  \end{table}
   
+  However this same study also showed a commit velocity increase of 141\%, so it could be argued that these bugs are quickly remedied due to this quicker 
+  release time. In addition to this as a team we do pull requests, another developer checks new cod before release, which should also mitigate some 
+  of the outlined issues above.
+
+  \subsubsection{Software Changeover Strategies}
+  The system that is being upgraded is in LIVE use by partners, but the work itself will take time to implement. We don't want to make changes to how
+  the LIVE system works for partners but we do want to test that the new software works on the LIVE environment without a \textit{big-bang} deployment.
+
+  Changeover strategies - \url{https://ijoaemorg.files.wordpress.com/2017/11/02090048_r.pdf}
+  Data separation - \url{https://metaorangedigital.com/blog/strategies-to-run-old-new-systems-simultaneously-using-the-same-database/}
 
   Draw parallels to disaster recovery replication and measures.
-  etl testing? 
-   - https://www.ibm.com/topics/etl
-   - https://www.infosys.com/IT-services/validation-solutions/white-papers/Documents/seven-step-framework-CICD-ETL-testing.pdf
 
-  Deploying to Live systems -\url{https://core.ac.uk/download/pdf/226768285.pdf}
-  Extra layer of threat - \url{https://media.defense.gov/2023/Jun/28/2003249466/-1/-1/0/CSI_DEFENDING_CI_CD_ENVIRONMENTS.PDF}
-  CI/CD more commits but more issues - \url{https://arxiv.org/pdf/2303.16393.pdf}
-  Good to use CI/CD in critical systems - \url{https://files.techmahindra.com/static/img/pdf/devsecops-continuous-testing-adoption-in-safety-critical-software.pdf}
-  Cost of bugs - \url{https://www.testim.io/wp-content/uploads/2019/11/CI_CD-The-Solution-to-High-Cost-Quality_Sep-2018.pdf - This might be shit}
-  Devops survey - \url{https://about.gitlab.com/developer-survey/previous/2022/}
-  Cost of errors (use CI/CD to stop) - \url{https://raygun.com/blog/cost-of-software-errors/#cost}
-
-  Tech debt definition - \url{https://www.productplan.com/glossary/technical-debt/}
-  Technical debt - \url{http://jultika.oulu.fi/files/nbnfi-fe201902185288.pdf}
 
 \newpage
