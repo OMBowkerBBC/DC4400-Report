@@ -159,17 +159,29 @@
   \end{table}
   
   However this same study also showed a commit velocity increase of 141\%, so it could be argued that these bugs are quickly remedied due to this quicker 
-  release time. In addition to this as a team we do pull requests, another developer checks new cod before release, which should also mitigate some 
+  release time. In addition to this as a team we do pull requests, another developer checks new code before release, which should also mitigate some 
   of the outlined issues above.
 
   \subsubsection{Software Changeover Strategies}
   The system that is being upgraded is in LIVE use by partners, but the work itself will take time to implement. We don't want to make changes to how
   the LIVE system works for partners but we do want to test that the new software works on the LIVE environment without a \textit{big-bang} deployment.
 
-  Changeover strategies - \url{https://ijoaemorg.files.wordpress.com/2017/11/02090048_r.pdf}
-  Data separation - \url{https://metaorangedigital.com/blog/strategies-to-run-old-new-systems-simultaneously-using-the-same-database/}
+  There are three main types of changeover strategy, direct (big-bang), parallel running or a phased strategy and it's multiple variants (Banerjee, 2017). 
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{assets/changeoverStrategies.png}
+    \caption{Timeline of different changeover strategies (Banerjee, 2017).}
+    \label{fig:changeoverStrategies}
+  \end{figure}
+  
+  As discussed a direct approach is risky and could easily run into errors, a phased approach in this situation is also not valuable as the we want 
+  to remain consistent in the data we provide to all our partners, so a parallel system is our best option. Temporarily the old and new system will 
+  run side-by-side, this will allow us to write comparison tests between the old output and the new (Smyth, 2020).
 
-  Draw parallels to disaster recovery replication and measures.
-
+  In addition to having both systems the data on redis also needs to be separate as they may differ during development. This will be achieved by 
+  using different redis keyspace prefixes (IoRedis, 2024) to keep the data separate and allow a test to check both for differences (Rustagi, 2023). 
+  The partners would continue to get data from the old keyspace, when we are happy with our comparison tests the partners can be swapped over to the new 
+  keyspace and the old data can be deleted. 
 
 \newpage
