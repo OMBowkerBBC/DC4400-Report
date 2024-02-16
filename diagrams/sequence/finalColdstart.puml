@@ -1,0 +1,16 @@
+@startuml Final Coldstart
+actor Developer as dev
+entity "Schedule Generator" as sg
+database "Internal Store" as sm
+database "External Store" as bsd
+entity "Delta SNS" as sns
+
+dev -> sg : Invokes schedule generator coldstart
+sg -> sm  : Requests list of schedules
+sg <-- sm : Returns list of schedules
+sg -> bsd  : Requests list of schedules
+sg <-- bsd : Returns list of schedules
+sg -> sg : Calculate differences between stores
+sg -> sns : Send notifications of changes
+
+@enduml
