@@ -1,7 +1,7 @@
 import itertools, os, sys
 
 if __name__ == "__main__":
-  removeImages: bool = sys.argv[1] == '--remove-images'
+  removeImages: bool = len(sys.argv) > 1 and sys.argv[1] == '--remove-images'
   puml_files: [str] = []
   png_files: [str] = []
 

@@ -1,0 +1,17 @@
+@startuml Schedule Concurrency
+title Schedule Concurrency
+
+start
+  :Recieve catalogue update;
+  :Update catalogue item in store;
+  :Determine schedules referencing catalogue item;
+  fork
+    :Update schedule n;
+  fork again
+    :Update schedule n+1;
+  fork again
+    :Update schedule n+2;
+  end merge
+  stop
+
+@enduml
