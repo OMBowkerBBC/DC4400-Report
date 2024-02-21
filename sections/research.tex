@@ -85,10 +85,10 @@
     There is also a situation where a client locks a piece of data and for one reason or another halts, this would cause needless delay, when a timeout is 
     specified, if a timeout is not specified then this object would be locked from changes indefinitely (Thornton, 2001).
 
-    \item \textbf{Optimistic Locking} - This method \textit{'relies on end-of-transaction validation'} (Graefe, 2016). Unlike its counterpart
-    (pessimistic locking) it does not lock the record that is being updated. Instead before the new data is written, the original data is checked against 
-    the current data stored (Thornton, 2001). If this data doesn't match then a change has occurred during processing and the new data to be written 
-    must be re-calculated with the new changes.
+    \item \textbf{Optimistic Locking} - This method \textit{'relies on end-of-transaction validation'} (Graefe, 2016) and takes the outlook of presuming
+    it's safe to write until the very end (Kanungo, Morena, 2023). Unlike its counterpart (pessimistic locking) it does not lock the record that is 
+    being updated. Instead before the new data is written, the original data is checked against the current data stored (Thornton, 2001). If this data doesn't
+    match then a change has occurred during processing and the new data to be written must be re-calculated with the new changes.
 
     \begin{figure}[H]
       \centering

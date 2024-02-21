@@ -1,0 +1,20 @@
+@startuml Changeset Lifecycle
+entity "Schedule Generator" as sg
+database "Redis Store" as bsd
+database "Changeset Store" as s3
+entity EventBridge as eb
+actor Partner as partner
+control API as api
+
+autonumber
+
+sg -> bsd : Store updated item
+sg -> s3 : Store change in changeset
+sg -> eb : Send notification of changeset
+eb -> partner : Forward notification of changeset
+partner -> api : Request changeset
+api -> s3: Request changeset
+api <-- s3: Return changeset
+partner <-- api : Return changeset
+
+@enduml

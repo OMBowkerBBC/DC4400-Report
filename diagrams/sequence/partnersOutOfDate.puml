@@ -1,0 +1,18 @@
+@startuml How Partners Remain Out of Date
+entity "Schedule Generator" as sg
+database "External Store" as bsd
+actor Partner as partner
+
+sg -> bsd : Update item in store
+bsd <- partner : Requests data to display in UI
+bsd --> partner : Return new schedule data
+...1 minute later...
+sg -> bsd : Update item in store
+note right: Partner out of date
+...2 minutes later...
+sg -> bsd : Update item in store
+...2 minutes later...
+bsd <- partner : Requests data to display in UI
+bsd --> partner : Return new schedule data
+
+@enduml
