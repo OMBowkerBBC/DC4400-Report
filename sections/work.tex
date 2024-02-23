@@ -143,13 +143,13 @@
   \end{figure}
 
   A work breakdown structure (WBS) is a tool used to \textit{'break down deliverables into sub-deliverables to visualize projects'} (Raeburn, 2024) 
-  and is typically broken down into 3 levels, parents, dependencies and sub-tasks, however it can consist of as a team wants. For the above I kept it 
+  and is typically broken down into 3 levels, parents, dependencies and sub-tasks, however it can consist of as any as a team wants. For the above I kept it 
   at 3 levels, going vertically, blue represents self-contained features/components, orange is a parent task to complete the feature and yellow is a 
-  sub-task of the parent ticket. Numbers on the sub-tasks represent the initial prioritisation/ordering of the tasks into slices or feature sets.
+  sub-task of the parent task. Numbers on the sub-tasks represent the initial prioritisation/ordering of the tasks into slices or feature sets.
   
   It's important to note that this is not the final list of tasks. Unknowns will always appear whilst developing the software and result in additional
-  tasks being created. However the WBS helps refine the scope to what is needed (Burghate, 2018). As can be seen on the above there are 3 tasks that have 
-  been moved to a \textit{'nice to have'} section, which have been deemed unnecessary for the projects completion.
+  tasks being created. However the WBS helps refine the scope to what is needed (Burghate, 2018). As can be seen in the above figure there are 3 tasks that have 
+  been moved to a \textit{'nice to have'} section, which have been deemed unnecessary for the projects initial completion.
 
   Another way to visualise these feature sets is using an Archimate implementation and migration diagram. This allows the modelling of work packages,
   gaps, deliverables, plateaus (stages) and events (The open group, 2016). The diagram on the next page shows the project mapped out using these elements, 
@@ -168,13 +168,52 @@
     \begin{figure}
       \centering
       \includegraphics[width=20cm]{assets/migration.drawio.png}
-      \caption{Figure showing archimate implementation/migration diagram for project.}
+      \caption{Figure showing Archimate implementation/migration diagram for project.}
       \label{fig:migration}
     \end{figure}
   \end{landscape}
 
   \newpage
   \subsection{Build software}
+  Before discussing the build stage, it's important to understand the multiple environments used in development.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{assets/environments.drawio.png}
+    \caption{Diagram showing the different environments used by SpaceChimp.}
+    \label{fig:environments}
+  \end{figure}
+
+  The above figure illustrates where the pipelines get their data from dependant on the environment, as well as what tests access said environment.
+  We have 3 environments, int, test and live, with test mimicking live (Wiggins, 2017). This allows us to use the test environment to protect live from 
+  any bugs or errors introduced by a task whilst also allowing the testing of outputs between old and software (Zheng, 2021). However when running on test
+  and live we don't have control over the data source and the events it sends out to the pipeline, thus making it hard to test certain scenarios and features.
+  This is where the int environment is used, we mock the data source used on test/live but have full control over what is added and removed, This allows 
+  us to routinely check all edge cases and features are working as expected.
+
+  \vspace{0.2cm}
+
+  The build stage consists of writing and testing the software and resembles the flow of our kanban board.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{assets/kanbanBoard.png}
+    \caption{SpaceChimps kanban board.}
+    \label{fig:kanbanBoard2}
+  \end{figure}
+
+  \begin{itemize}
+    \item \textbf{Ready for dev} - Tasks that are ready to be picked up for development.
+    \item \textbf{Kick-off} - Tasks that need a test kick-off, which is not the same as the previous sections kick-off. This is where developers
+    discuss the task with a member of the test team and determine the Acceptance Criteria (ACs) and test approach for the task.
+    \item \textbf{In Progress} - Tasks that are being developed and worked on.
+    \item \textbf{In Test} - Task has been completed and changes are on the test environment. A member of the test team can now test the ticket
+    based on the previous discussions had in the kick-off. If things have changed during development, an additional hand-over with the test team 
+    is done to discuss the new changes.
+    \item \textbf{Releasing} - After a ticket task has been tested and has met the specified ACs, the task is moved to the releasing column signifying 
+    that is ready to be deployed to the live environment.
+    \item \textbf{Live monitoring} - Tasks in this column need to be monitored on the live environment to make sure that the change is functioning as expected.
+  \end{itemize}
 
   \begin{figure}[H]
     \centering
@@ -182,6 +221,8 @@
     \caption{Build stage of our of working.}
     \label{fig:workflowBuild}
   \end{figure}
+
+  I will now discuss the 4 key components/features that were built during this stage, along with decisions and challenges that occurred during development.
 
   \subsubsection{Coldstarts}
 
