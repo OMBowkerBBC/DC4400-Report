@@ -224,12 +224,81 @@
 
   I will now discuss the 4 key components/features that were built during this stage, along with decisions and challenges that occurred during development.
 
-  \subsubsection{Coldstarts}
-
+  \newpage
   \subsubsection{Delta/change lambda}
 
+  \newpage
   \subsubsection{Garbage Collector}
 
+  \newpage
+  \subsubsection{Coldstarts}
+  We use the term coldstart to refer to the refreshing of all data, in schedules terms all schedules will be checked to see if an update has occurred.
+  This is not related to a cold start/boot in relation to serverless architectures (Microsoft Azure, 2018), although this is something that can affect 
+  our lambdas. We already had a coldstart in place but changes would have to be made to work with the new delta/notifications environment.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Intial Coldstart Design.png}
+    \caption{Activity diagram showing initial idea for coldstart changes.}
+    \label{fig:initialColdstart}
+  \end{figure}
+
+  The above diagram shows the initial design for how the coldstart would function. The changes seem relatively simple:
+  \begin{enumerate}
+    \item Disable triggering of lambda on delta notification event. This is so no changes can interfere with the refresh of data.
+    \item Purge the queue of updates before starting processing to stop unnecessary triggers of the lambda after the cold start has finished.
+    \item Populate the redis with all the catalogue data it needs, this is done on schedule updates also. 
+    \item Re-enable the triggering of lambda on delta notification event.
+  \end{enumerate}
+
+  Disabling and enabling of the lambda trigger can be achieved through the UpdateEventSourceMapping api (Amazon Web Services, 2024l) provided by AWS. 
+  At the start, the trigger can be disabled, then re-enabled once the coldstart is finished.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{assets/lambdaMapping.png}
+    \caption{Diagram edited from Charles (2021) to show lambda mapping states.}
+    \label{fig:lambdaMapping}
+  \end{figure}
+
+  Purging the SQS queue of delta notifications can also be done though a similar API and the population of redis is already done per schedule, so 
+  this seems like an easy switchover to work in the new world of delta notifications.
+
+  However, as work began the code grew more and more complex, due mainly to the new logic of copying data over into the new schedule redis keyspace.
+  Maintaining the broadcast list in the episodes would mean making the population logic complex and hard to follow. Code complexity can be a huge 
+  problem with developers not wanting to edit the code in fear of breaking the current workings, difficulty to maintain 
+  (Mateus, Andre, 2022 and Olbrich et al, 2009) and the \textit{truck/bus factor} which illustrates how hard it would be for a new team member to 
+  understand with no help from the creator (Avelino et al, 2016). In addition to this, a study done by (Taibi et al, 2017) found that 
+  \textit{'Smells related to size and complexity are considered harmful by a higher percentage of participants than others.'}. The system created is 
+  complex and has multiple inputs that can interfere with each other, the same study also found that this higher complexity is less likely to be 
+  refactored in the future (Taibi et al, 2017).
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|llr|}
+  \hline
+  \multicolumn{1}{|c|}{\multirow{2}{*}{Complexity}} & \multicolumn{3}{l|}{Level of occurrence (\%)}                        \\ \cline{2-4} 
+  \multicolumn{1}{|c|}{}                            & \multicolumn{1}{l|}{Seldom} & \multicolumn{1}{l|}{Regularly} & Often \\ \hline
+  Low                                               & \multicolumn{1}{l|}{7.94}   & \multicolumn{1}{l|}{23.81}     & 57.14 \\ \hline
+  Medium                                            & \multicolumn{1}{l|}{12.70}  & \multicolumn{1}{l|}{55.56}     & 19.05 \\ \hline
+  High                                              & \multicolumn{1}{l|}{46.03}  & \multicolumn{1}{l|}{28.57}     & 14.29 \\ \hline
+  \end{tabular}
+  \end{table}
+
+  For these reasons a new approach was thought of. The coldstart would tidy up the differences between it's \textit{truth} the internal store, and 
+  it's output. Anything not in the internal store is to be removed with the rest of the schedules being processed as if it was a delta notification 
+  event.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/sequence/Final Coldstart.png}
+    \caption{Sequence diagram showing the new flow of the final coldstart solution.}
+    \label{fig:finalColdstart}
+  \end{figure}
+
+  This allows the re-use of existing code whilst reducing the complexity and potential code duplication of the coldstart by a sizeable amount.
+
+  \newpage
   \subsubsection{Integration tests}
 
   \newpage

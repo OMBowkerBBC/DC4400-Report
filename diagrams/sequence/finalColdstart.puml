@@ -1,7 +1,7 @@
 @startuml Final Coldstart
 actor Developer as dev
 entity "Schedule Generator" as sg
-database "Internal Store" as sm
+database "Source Store" as sm
 database "External Store" as bsd
 entity "Delta SNS" as sns
 
@@ -11,6 +11,7 @@ sg <-- sm : Returns list of schedules
 sg -> bsd  : Requests list of schedules
 sg <-- bsd : Returns list of schedules
 sg -> sg : Calculate differences between stores
-sg -> sns : Send notifications of changes
+sg -> bsd : Remove schedules no longer held in source store
+sg -> sns : Send notifications for each schedule left
 
 @enduml
