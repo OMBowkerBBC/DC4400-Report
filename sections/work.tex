@@ -227,8 +227,6 @@
   \newpage
   \subsubsection{Delta/change lambda}
 
-  \newpage
-  \subsubsection{Garbage Collector}
 
   \newpage
   \subsubsection{Coldstarts}
@@ -297,6 +295,42 @@
   \end{figure}
 
   This allows the re-use of existing code whilst reducing the complexity and potential code duplication of the coldstart by a sizeable amount.
+
+  \newpage
+  \subsubsection{Garbage Collector}
+  Nowadays garbage collectors are synonymous with programming languages such as Java (Xu et al, 2019), however the first language to implement garbage 
+  collection was LISP in the 1960s (Matam, 2023). Before then programmers had to manually assign memory for variables stored on the heap, as well as 
+  unassign the memory when they were finished using it (Fakhoury et al, 2024 and Matam, 2023). 
+  Garbage collection stops memory leaks as any unused memory is reclaimed (Microsoft, 2023).
+
+  Whilst doing the spike it was thought that a form of \textit{garbage collector} may help simplify some of the logic around the removal of catalogue items
+  from redis. Episode were easy to remove as once their associated broadcast list was empty they no longer needed to be stored. But due to having to 
+  traverse upwards to find other linked items, it became complex and time consuming to calculate if an episodes parents (series) and grandparents (brands)
+  also needed to be removed from the schedule redis store.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{assets/catalogueTree.drawio.png}
+    \caption{Example tree and associations between objects.}
+    \label{fig:catalogueTree}
+  \end{figure}
+
+  Looking at the figure above outlines one possible scenario. If \emph{Episode 1} is removed from \emph{Schedule 1} then the episode object should be removed
+  from redis and so should it's parent \emph{Series 1} as that also no longer has any schedule relations. However \emph{Brand} must stay as it still
+  has \emph{Episode 2} and \emph{Series 2} that depend on it and relate it to \emph{Schedule 2}. Due to the potential to fan out like this, all data stored
+  in the redis keyspace would have to be checked to see if there was any schedule still depending on the top level object (the brand). This takes a lot of
+  memory and bandwidth to retrieve all this data. It was for that reason that it was decided, once a day a garbage collector should be ran to 
+  tidy up anything no longer required.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{assets/architectures/garbageCollector.png}
+    \caption{Garbage collector architecture.}
+    \label{fig:garbageCollectorArchitecture}
+  \end{figure}
+
+  Above is the final architecture, a lambda is triggered by a scheduler once a day a 3AM to tidy up the leftover series and brands. In a later
+  \hyperref[sec:conclusion]{\textbf{section}} the idea of moving all catalogue removals, including episodes, to the garbage collector is explored.
 
   \newpage
   \subsubsection{Integration tests}
