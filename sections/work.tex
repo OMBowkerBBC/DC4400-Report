@@ -333,13 +333,87 @@
   \hyperref[sec:conclusion]{\textbf{section}} the idea of moving all catalogue removals, including episodes, to the garbage collector is explored.
 
   \newpage
-  \subsubsection{Integration tests}
+  \subsubsection{End-to-end tests}
+  In this section I want to discuss the larger tests that were created as part of the project. These include end-to-end (e2e) and comparison tests.
+  As a team we follow the pattern of tests layed out in the test pyramid.
 
-  Test pyramid - \url{https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html}
-  Difference between e2e and integration - \url{https://www.testim.io/blog/end-to-end-testing-vs-integration-testing/}
-  Issues with e2e tests - \url{https://e-archivo.uc3m.es/bitstream/handle/10016/37699/challenges_ICST_2023_ps.pdf?sequence=1}
-  Maybe? pros and cons - \url{https://apps.dtic.mil/sti/tr/pdf/AD1022569.pdf}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{assets/testPyramid.png}
+    \caption{Test pyramid (Wacker, 2015).}
+    \label{fig:testPyramid}
+  \end{figure}
 
+  Unit tests and integration tests are written alongside the code, and can run on project build as they are cheap and quick to run (Spinellis, 2017).
+  E2e tests sit at the top of this pyramid and should be used sparingly. This is not always the case, in other types of development, for example mobile,
+  this pyramid can be turned upside down (Knott, 2015, cited in Contan, Dehelean and Miclea, 2018). This is probably due to mobile application being 
+  primarily UI driven, which is the opposite for this project.
+
+  In addition to this e2e and integration tests often get confused with one another. Integration tests \textit{'ensure synchronization between modules'}
+  (Testim, 2021), and are more comparable to a unit test. Whereas a unit test is concerned on a single function/method an integration would test the calling of 
+  methods by other methods and ensure integration between these two functions are working as expected. E2e tests are focused on actions/events that the 
+  system must deal with as normal operation and could be described as automated manual testing (Testim, 2021).
+  
+  Due to their higher complexity, e2e tests are not without their potential problems. These include maintenance the written 
+  tests, flakiness (are prone to randomly pass or fail without any discernable reason), time taken to run the tests and the cost of both the 
+  execution of the tests and the time to write them (Yang and Leotta et al, 2023). 
+
+  One of the larger problems we've faced in the passed is asynchronicity between tests (Leotta et al, 2023). For example if we upload a schedule at the 
+  start of the pipeline and want to test it's structure at the end of the pipeline where partners would receive it, there's a lot that can interfere with 
+  expected outputs. For the most part these bugs are when tidy up of a previous test is not carried out fully. If two test use the same identifier 
+  for a schedule and then don't remove said schedule, this can result in tests not running how expected. It's for this reason during the development 
+  of these new tests the code below was written to ensure that the schedule item about to be asserted on is not stored in the redis prior to the 
+  test starting.
+
+  \begin{lstlisting}[caption=Code to ensure schedule to asserted on is not present at the start of the test.]
+    waitFor(`Ensure ${schedule} is not present before running test`, async () => {
+      const bsd = await fetchFromRedis({
+        command: 'isAbsent',
+        keySpace: 'bsd_v2.0',
+        sidDates: [schedule],
+      })
+      expect(bsd).toEqual([null])
+    })
+  \end{lstlisting} 
+
+  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}.
+  Currently these cover all possible scenarios, however have a lot of overlap and repetitiveness. In an ideal world a test would cover an individual
+  use case (Daly, 2022). These 14 scenarios could then be a part of these use case tests which would speed how quickly they run, thus lowering the cost.
+  These use cases could be the following:
+
+  \begin{itemize}
+    \item Update a schedule
+    \item Delete a schedule
+    \item Update an episode
+    \item Update an ancestor (series/brand)
+    \item Tidy up orphaned items in redis (garbage collector)
+  \end{itemize}
+
+  This lowers the number of running test by 9 and removes a lot of time and duplication taken by setting up the scenarios. Due to time constraints and 
+  prioritisation of other projects for the future, this refactor has not yet been undertaken but is in the backlog of things to do in the future. The 
+  cost saved from changing this wouldn't be high, and doesn't justify the time it would take to refactor.
+
+  For this project we stuck with the scenarios, some had already been done in previous work which meant we only had tests to write for the new 
+  notification functionality. After discussion with the test team these tests include:
+
+  \begin{enumerate}
+    \item Hydration of episode stub to full episode object on episode update, as well as the episode parents and grandparents being transferred. This
+    test would also make sure any schedules associated with the episodes titling was updated.
+    \item Complex logic on schedule update, when a broadcasts episode changes in the schedule, if that episode has no remaining links to any other 
+    schedules it should be removed from the schedule redis.
+    \item Test whether correct supplementary data matches what is in the schedule. For partner requests we also send episode/series/brand data, 
+    this data should be relevant to the broadcasts contained within the schedule.
+  \end{enumerate}
+
+  There were originally more test scenarios to be done as part of this project. However after discussing with both developers and testers it was decided 
+  that these were either already being tested by unit tests or other parts of the testing library, or were unnecessary. This work was removed from 
+  the board which can be seen in the burn-up charts in the \hyperref[sec:burnup]{\textbf{Outputs}} section.
+
+  Finally we created comparison tests, to compare the old static output and new delta/notification output. These tests could be compared to extract, 
+  transform, load (ETL) testing (Talend Inc, 2024). These tests will give us the confidence to switch our partners over to the new system. We decided
+  upon a 1 week time frame where these comparisons tests must pass continuously before we are happy to make the switch. On failure the logs from the test
+  will help us debug any current and future issues with the system.
+   
   \newpage
   \subsection{Release}
   The release stage is the final stage in our workflow. This is when software gets released to the live environment and becomes available to partners. 
