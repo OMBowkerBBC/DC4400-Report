@@ -48,16 +48,50 @@
 
   I will now discuss the 4 key components/features that were built during this stage, along with decisions and challenges that occurred during development.
 
+  \newpage
   \subsubsection{Delta/change lambda}
   Before notification events were being processed, schedules relied on the coldstarting/refreshing of data every 15 minutes. The delta lambda is the 
-  the component that moves away from this paradigm and is the main component in the project.
+  the component that moves away from this paradigm and is the main component in this project. I have separated this section into the different types
+  of notifications the component can receive, schedule updates and deletes and catalogue updates and deletes. But before delving into that, a bit of extra
+  information is required about the build.
+
+  \vspace{0.2cm}
+  In the old system there was no link between episodes and schedules. We now need one, as an certain changes to episodes can change what a schedule 
+  contains. For this reason it was decided that a new field could be added to episode, the broadcast\_list field. This would contain a list of all 
+  schedules that an episode was referenced in.
+
+  In addition to this, an architectural decision was made, before me taking on the project for this report, to have all schedule documents be in one keyspace,
+  this can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}. 
+  This making it easy to return all the relevant data on partner requests from our API and now with an additional field, making it so catalogue schemas would 
+  not have to be changed. To do this all data relating to any current schedules offered must be copied over from the catalogue redis keyspace to the schedule
+  redis keyspace, with the broadcast\_list field being added only to the schedules version of the object. The below figure shows how this works on a
+  schedule update.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=8cm]{diagrams/activity/Populate Catalogue Items.png}
+    \includegraphics[width=12cm]{diagrams/activity/Populate Catalogue Items.png}
     \caption{Activity diagram showing logic of populating schedule redis.}
     \label{fig:scheduleRedisPopulationActivity}
   \end{figure}
+
+  There's 3 options that can happen here:
+  \begin{enumerate}
+    \item If the episode is already in the schedules store, then we need to add a link to the current schedule being updated if it doesn't
+    already reference it. 
+    \item If it's not in the schedules store, but is in the catalogue store, then it needs to be copied over and have the current schedule
+    being updated referenced in it's broadcast list.
+    \item If it's not in either store, then a stub must be made, this stub has a unique identifier (pid), a type of \emph{episode\_stub} and 
+    a broadcast list, that in this case holds the schedule currently being updated.
+  \end{enumerate}
+
+  The episode stub is required, despite it containing no useful information to the schedules tilting and other fields and is also discarded when a
+  partner requests said schedule. It is required because of the event driven nature of the new system and the broadcast list it contains. With a stub in 
+  the store, when an episode update is processed for that stub it can now also update all the schedules associated with it, immediately populating tilting
+  and descriptions for all.
+
+  As will be discussed in the following sections, different types of notifications can affect different kinds of data. Below is a table showing the 
+  relations between types of updates and what can be affected. The garbage collector will be discussed later in the report, but is also included in 
+  the table for completeness.
 
   \begin{table}[H]
     \centering
@@ -68,6 +102,7 @@
       Schedule Delete & \ding{55} & \ding{55} & \\ \hline
       Episode Update & \ding{51} & \ding{51} & \ding{51} \\ \hline
       Ancestor Update & \ding{51} &  & \ding{51} \\ \hline
+      Garbage Collector &  &  & \ding{55} \\ \hline
     \end{tabular}
     \caption{Table showing how different types of notification can affect stored data (\ding{51} updates, \ding{55} deletes).}
   \end{table}
@@ -122,6 +157,10 @@
     \caption{Activity diagram showing logic that happens when a catalogue notification triggers schedule updates.}
     \label{fig:catalogueTriggeredScheduleUpdateActivity}
   \end{figure}
+
+  \paragraph{Catalogue Deletes}
+  It was determined during the spike that catalogue deletes would not need to be processed due to the creation of the garbage collector removing 
+  orphaned ancestor items, and schedule events taking care of episode removals. This saves a lot of additional lambda invokes over time.
 
   \newpage
   \subsubsection{Coldstarts}
@@ -272,7 +311,7 @@
     })
   \end{lstlisting} 
 
-  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}.
+  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixG]{\textbf{Appendix G}}.
   Currently these cover all possible scenarios, however have a lot of overlap and repetitiveness. In an ideal world a test would cover an individual
   use case (Daly, 2022). These 14 scenarios could then be a part of these use case tests which would speed how quickly they run, thus lowering the cost.
   These use cases could be the following:
