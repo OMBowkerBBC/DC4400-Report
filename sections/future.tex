@@ -36,7 +36,6 @@ This new schedule can then be used instead of the old one, without doing a full 
 \end{figure}
 
 \newpage
-\hyperref[sec:storageSolutions]{\textbf{Research}}
 \subsection{Parallelise the current system}
 The new system is single-threaded and is unable to run in parallel due to shared memory between the threads needing to be managed. The piece of memory
 at fault here is the broadcast list held in episodes that link that episode to schedules in which it is referenced. The main problem here is redis 
@@ -126,7 +125,30 @@ the argument that determines what row is locking the record.
       \end{figure}
   \end{itemize}
 
-  \subsection{Conclusions and Other Small Changes}
+  \newpage
+  \subsection{Garbage Collection Consolidation}
+  \label{sec:garbageCollectorConsolidation}
+
+  A small change that could be made is for the garbage collector alone to handle removal of catalogue items, with the schedule generator only 
+  removing schedules. This makes a lot of sense especially when applying the architectural principle of separation of concerns (SoC) which 
+  \textit{'asserts that software should be separated based on the kinds of work it performs'} (Smith, 2023, ch. 3, p. 11). In addition to adhering 
+  to well known principles it would also simplify what has become a bloated and complex schedule generator.
+
+  The initial reason for removing the episode immediately upon deletion of schedule or the realisation that an episode was no longer referenced in 
+  any schedule was for timeliness for partners. However this doesn't make sense, partners would never receive this orphaned information anyway due to 
+  how the data is collected for them on request.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{diagrams/activity/Partner Schedule Request.png}
+    \caption{How supplementary catalogue data is calculated for partner request.}
+    \label{fig:partnerRequest}
+  \end{figure}  
+
+  The benefits of removing this make things much clearer and is a quick win in comparison to some of the other suggestions for future work.
+
+  \newpage
+  \subsection{Conclusions}
   \label{sec:conclusion}
-  Garbage collector to do all of the collecting episode as well...
+  
 \newpage

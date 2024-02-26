@@ -1,0 +1,20 @@
+@startuml Partner Schedule Request
+title Partner Schedule Request
+
+start
+  if (valid partner) then (yes)
+    :Fetch requested schedule from redis;
+    :Extract episode pids from schedule;
+    :De-duplicate episode pids;
+    :Get all episodes from redis;
+    :Remove unneeded fields;
+    :Get ancestor data linked to episodes;
+    :De-duplicate ancestor data;
+    :Return schedule and supplementary data;
+    end
+  else (no)
+    :Return 400 response;
+    end
+  endif
+
+@enduml
