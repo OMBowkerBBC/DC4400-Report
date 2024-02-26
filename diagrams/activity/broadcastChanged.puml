@@ -12,7 +12,7 @@ start
         if (Episode has no schedule references) then (yes)
           :Remove episode from redis store;
         else (no)
-          :Remove schedule being deleted from episodes broadcast_list;
+          :Remove schedule being updated from episodes broadcast_list;
         endif
       repeat while (Changes left to process) is (yes) not (no);
       end

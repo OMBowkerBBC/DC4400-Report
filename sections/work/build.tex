@@ -109,6 +109,10 @@
 
 
   \paragraph{Schedule Updates}
+  Schedule updates refer to either the updating of a schedule, or the creation of a new schedule. There are some guards around whether the 
+  schedule exists, then all catalogue data associated with the schedule is copied from the catalogue store to the schedule store, if it's is 
+  not already there. This data can then be used to transform everything into the final schedule, where if any valid changes have been made, the 
+  new schedule is stored.
 
   \begin{figure}[H]
     \centering
@@ -117,6 +121,10 @@
     \label{fig:scheduleUpdateActivity}
   \end{figure}
 
+  There is an edge case specified in the above diagram, where a broadcast within a schedule changes the episode that it's going to play. 
+  In this case we have to either tidy up the old episodes broadcast list to no longer contain a reference to the schedule, or, if that episode no 
+  longer references any schedules, remove it from the schedule store.
+
   \begin{figure}[H]
     \centering
     \includegraphics[width=8cm]{diagrams/activity/Broadcast Changed.png}
@@ -124,8 +132,10 @@
     \label{fig:broadCastChangeActivity}
   \end{figure}
 
-
   \paragraph{Schedule Deletes}
+  Schedule deletes are one of the simpler events. Other than some basic guards to check objects exists in redis, all episode object referenced in 
+  the schedules broadcasts have the schedule being deleted removed from their broadcast list. If this list is empty then that episode is also removed
+  from the schedule store. After all this is done, the schedule is also removed from the schedule store.
 
   \begin{figure}[H]
     \centering
