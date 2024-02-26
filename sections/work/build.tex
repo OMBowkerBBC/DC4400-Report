@@ -49,6 +49,79 @@
   I will now discuss the 4 key components/features that were built during this stage, along with decisions and challenges that occurred during development.
 
   \subsubsection{Delta/change lambda}
+  Before notification events were being processed, schedules relied on the coldstarting/refreshing of data every 15 minutes. The delta lambda is the 
+  the component that moves away from this paradigm and is the main component in the project.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Broadcast Changed.png}
+    \caption{Activity diagram showing logic to handle broadcast episode change.}
+    \label{fig:broadCastChangeActivity}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Populate Catalogue Items.png}
+    \caption{Activity diagram showing logic of populating schedule redis.}
+    \label{fig:scheduleRedisPopulationActivity}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Schedule Update.png}
+    \caption{Activity diagram showing logic when schedule update notification received.}
+    \label{fig:scheduleUpdateActivity}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Schedule Delete.png}
+    \caption{Activity diagram showing logic when schedule delete notification received.}
+    \label{fig:scheduleDeleteActivity}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{diagrams/activity/Episode Update.png}
+    \includegraphics[width=6cm]{diagrams/activity/Ancestor Update.png}
+    \caption{Activity diagrams showing logic when episode (left) and ancestor update (right) notifications received.}
+    \label{fig:scheduleUpdateCatalogueActivity}
+  \end{figure}
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|p{0.3\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|p{0.15\textwidth}|}
+      \hline
+      & Schedule & Episode & Ancestor \\ \hline
+      Schedule Update & \ding{51} & \ding{51} \ding{55} & \ding{51} \\ \hline
+      Schedule Delete & \ding{55} & \ding{55} & \\ \hline
+      Episode Update & \ding{51} & \ding{51} & \ding{51} \\ \hline
+      Ancestor Update & \ding{51} &  & \ding{51} \\ \hline
+    \end{tabular}
+    \caption{Table showing how different types of notification can affect stored data (\ding{51} updates, \ding{55} deletes).}
+  \end{table}
+
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{assets/handleBatchScheduleInterface.drawio.png}
+    \caption{Class diagram showing the interface for the handling schedule updates triggered by catalogue notifications.}
+    \label{fig:catalogueTriggeredScheduleUpdateClass}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{diagrams/activity/Catalogue update triggered schedule updates.png}
+    \caption{Activity diagram showing logic that happens when a catalogue notification triggers schedule updates.}
+    \label{fig:catalogueTriggeredScheduleUpdateActivity}
+  \end{figure}
+
+
+
+
+
+
+
 
 
   \newpage

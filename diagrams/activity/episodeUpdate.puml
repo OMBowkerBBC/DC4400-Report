@@ -1,0 +1,18 @@
+@startuml Episode Update
+title Episode Update
+
+start
+  if (Referecnce to episode exists in schedule redis) then (yes)
+    :Copy updated catalogue episode to schedule redis;
+    :Get episodes parents recursively;
+    :Copy episodes parents from catalogue redis to schedule redis;
+    if (Episode is linked to schedules) then (yes)
+      :Handle schedule changes linked to updated episode;
+    else (no)
+    endif
+    end
+  else (no)
+    end
+  endif
+
+@enduml

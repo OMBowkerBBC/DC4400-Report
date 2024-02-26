@@ -2,22 +2,23 @@
 title Catalogue update triggered schedule updates
 
 start
-  if (Multiple schedule referenced) then (yes)
-    :Pop first schedule off list;
-    :Process schedule;
-    if (Schedule update ocurrs) then (yes)
-      floating note left: This can be a Promise.all
-      repeat
-        :Pop schedule off list;
-        :Process schedule; 
-      repeat while (Schedules left to process) is (yes) not (no)
-      end
+  :De-duplicate schedules passed to function;
+  repeat
+    :Fetch schedule from store;
+    :Filter out broadcasts not referencing episode pids passed to function;
+    if (No broadcasts left after filter) then (yes)
+      :Continue to next schedule;
     else (no)
-      :Don't update anymore schedules;
-      end
+      :Transform new broadcasts linked to episodes;
+      :Re-insert effected updated broadcasts into schedule;
     endif
+  repeat while (Schedules left to process) is (yes) not (no);
+
+  :Write successful schedule updates to redis in transcation;
+  if (Schedule update errors occured) then (yes)
+    :Send notification to self to re-process entire schedule;
+    end
   else (no)
-    :Update single schedule as normal;
     end
   endif
 

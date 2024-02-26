@@ -1,0 +1,17 @@
+@startuml Ancestor Update
+title Ancestor Update
+
+start
+  if (Referecnce to ancestor exists in schedule redis) then (yes)
+    :Copy updated catalogue ancestor to schedule redis;
+    :Find all child episodes linked to ancestor in schedule redis;
+    if (Child episodes has links to schedules) then (yes)
+      :Handle schedule changes linked to child episodes;
+    else (no)
+    endif
+    end
+  else (no)
+    end
+  endif
+
+@enduml
