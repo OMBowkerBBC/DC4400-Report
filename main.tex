@@ -13,6 +13,18 @@
 \usepackage{longtable}
 \usepackage{pifont}
 
+% Include paragraph sections in contents
+\setcounter{tocdepth}{4}
+
+\makeatletter
+% display heading, like subsubsection
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+ \setcounter{secnumdepth}{4}
+\makeatother
+
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
   keywordstyle=\color{blue}\bfseries,

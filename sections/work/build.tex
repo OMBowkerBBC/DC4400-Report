@@ -54,38 +54,9 @@
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=8cm]{diagrams/activity/Broadcast Changed.png}
-    \caption{Activity diagram showing logic to handle broadcast episode change.}
-    \label{fig:broadCastChangeActivity}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
     \includegraphics[width=8cm]{diagrams/activity/Populate Catalogue Items.png}
     \caption{Activity diagram showing logic of populating schedule redis.}
     \label{fig:scheduleRedisPopulationActivity}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=8cm]{diagrams/activity/Schedule Update.png}
-    \caption{Activity diagram showing logic when schedule update notification received.}
-    \label{fig:scheduleUpdateActivity}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=8cm]{diagrams/activity/Schedule Delete.png}
-    \caption{Activity diagram showing logic when schedule delete notification received.}
-    \label{fig:scheduleDeleteActivity}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=6cm]{diagrams/activity/Episode Update.png}
-    \includegraphics[width=6cm]{diagrams/activity/Ancestor Update.png}
-    \caption{Activity diagrams showing logic when episode (left) and ancestor update (right) notifications received.}
-    \label{fig:scheduleUpdateCatalogueActivity}
   \end{figure}
 
   \begin{table}[H]
@@ -102,6 +73,42 @@
   \end{table}
 
 
+  \paragraph{Schedule Updates}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Schedule Update.png}
+    \caption{Activity diagram showing logic when schedule update notification received.}
+    \label{fig:scheduleUpdateActivity}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Broadcast Changed.png}
+    \caption{Activity diagram showing logic to handle broadcast episode change.}
+    \label{fig:broadCastChangeActivity}
+  \end{figure}
+
+
+  \paragraph{Schedule Deletes}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=8cm]{diagrams/activity/Schedule Delete.png}
+    \caption{Activity diagram showing logic when schedule delete notification received.}
+    \label{fig:scheduleDeleteActivity}
+  \end{figure}
+
+  \paragraph{Catalgoue Updates}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm]{diagrams/activity/Episode Update.png}
+    \includegraphics[width=6cm]{diagrams/activity/Ancestor Update.png}
+    \caption{Activity diagrams showing logic when episode (left) and ancestor update (right) notifications received.}
+    \label{fig:scheduleUpdateCatalogueActivity}
+  \end{figure}
+
   \begin{figure}[H]
     \centering
     \includegraphics[width=8cm]{assets/handleBatchScheduleInterface.drawio.png}
@@ -115,14 +122,6 @@
     \caption{Activity diagram showing logic that happens when a catalogue notification triggers schedule updates.}
     \label{fig:catalogueTriggeredScheduleUpdateActivity}
   \end{figure}
-
-
-
-
-
-
-
-
 
   \newpage
   \subsubsection{Coldstarts}
