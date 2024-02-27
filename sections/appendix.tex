@@ -57,17 +57,37 @@
     \includepdf[pages=-,scale=.6]{documents/spike.pdf}
 
   \newpage
-  \subsection{Appendix F - !TODO! Architectural decision for single schedules store}
+  \subsection{Appendix F - Architectural decision for single schedules store}
   \label{sec:AppendixF}
+
+  \subsection*{Architecture Decision Record 022: Single source for schedule data}
+
+  \subsubsection*{Context}
+  Schedule documents rely on catalogue data for titling, programme descriptions, subtitling and viewer discretion data. When requesting 
+  schedules via the API Gateway the partner also receives episode, series and brand data associated with the schedules requested as part of
+  the response. This data can be retrieved from the catalogue redis store but the schedules pipeline is then fully reliant on the catalogue pipeline.
+  This reliance of the catalogue pipeline (\emph{{bcd\_v2.0}:}) means that the schedule API gateway is not independent therefore it was requested to make 
+  catalogue data more integrated within the schedule redis stores. This ADR describes the decision made to ensure data independence.
+  \subsubsection*{Decision}
+  Copy over all catalogue data currently relating to schedules into the keyspace \emph{{bsd\_v2.0}:} and \emph{{bsd\_v2.0\_ref\_data}:} respectively on 
+  notification events or coldstart. This ensures the API Gateway can retrieve all of its information from one source and keep it's integrity and
+  self-consistency. This data should also be removed when no longer referenced by any schedules.
+
+  \subsubsection*{Status}
+  Accepted
+
+  \subsubsection*{Consequences}
+    \begin{itemize}
+      \item Overhead of copying over data existing data.
+      \item Added maintenance and code complexity.
+      \item Potential synchronisation issue when copying/deleting data across redis stores.
+    \end{itemize}
 
 
   \newpage
   \subsection{Appendix G - !TODO! List of e2e test scenarios}
     \label{sec:AppendixG}
     \includepdf[pages=-,scale=.6]{documents/spike.pdf}
-  
-
-
   
   \newpage
   \subsection{Appendix !TODO! - Competency Mappings and Links}

@@ -6,9 +6,9 @@ start
   repeat
     :Fetch schedule from store;
     :Filter out broadcasts not referencing episode pids passed to function;
-    if (No broadcasts left after filter) then (yes)
+    if (Has broadcasts to transform after filter) then (no)
       :Continue to next schedule;
-    else (no)
+    else (yes)
       :Transform new broadcasts linked to episodes;
       :Re-insert effected updated broadcasts into schedule;
     endif
@@ -16,7 +16,7 @@ start
 
   :Write successful schedule updates to redis in transcation;
   if (Schedule update errors occured) then (yes)
-    :Send notification to self to re-process entire schedule;
+    :Send notification to re-process entire schedule;
     end
   else (no)
     end

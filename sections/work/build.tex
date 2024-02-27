@@ -145,6 +145,8 @@
   \end{figure}
 
   \paragraph{Catalgoue Updates}
+  Catalogue updates must also be processed by the schedule generator as they contain information about titling, programme descriptions and more.
+
 
   \begin{figure}[H]
     \centering
@@ -154,12 +156,32 @@
     \label{fig:scheduleUpdateCatalogueActivity}
   \end{figure}
 
+  Episode and ancestor updates are similar. Episode updates must update themselves but also that episodes parents as
+  the parents contain additional tilting information required for the schedule to be accurate.
+
+  Due to this titling information being held at multiple levels of the catalogue data, when an ancestor is updated it must update itself,
+  but then also find all episodes in the schedule store that are dependant on it.
+
+  Episodes contain a list of schedules that reference it. These schedules must be updated, so a method was created that could handle these
+  schedule changes in a batch form.
+
   \begin{figure}[H]
     \centering
     \includegraphics[width=8cm]{assets/handleBatchScheduleInterface.drawio.png}
     \caption{Class diagram showing the interface for the handling schedule updates triggered by catalogue notifications.}
     \label{fig:catalogueTriggeredScheduleUpdateClass}
   \end{figure}
+
+  The method used the above interface and could be called the same way when updating an episode or an ancestor. The data includes:
+  \begin{itemize}
+    \item \textbf{scheduleIds} - Schedules in episodes broadcast lists.
+    \item \textbf{episodeIds} - Episodes effected by the change, singular on episode update, multiple on ancestor update.
+    \item \textbf{transformationData} - Episode/series/brand data needed to transform the all schedules.
+    \item \textbf{timestamp} - Used for consistent update time on all updates.
+  \end{itemize}
+
+  Using this interface logic can then carried out to only update the broadcasts that have changed within a schedule instead of the 
+  entire schedule itself.
 
   \begin{figure}[H]
     \centering
