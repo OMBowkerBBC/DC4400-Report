@@ -11,7 +11,6 @@ sg <-- sm : Returns list of schedules
 sg -> bsd  : Requests list of schedules
 sg <-- bsd : Returns list of schedules
 sg -> sg : Calculate differences between stores
-sg -> bsd : Remove schedules no longer held in source store
-sg -> sns : Send notifications for each schedule left
+sg -> sns : Send notifications for schedule updates and deletes
 
 @enduml

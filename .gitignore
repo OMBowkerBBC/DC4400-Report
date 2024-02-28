@@ -3,8 +3,10 @@
 /diagrams/activity/*.png
 /diagrams/sequence/*.png
 todo
-~$main.pdf
 .DS_Store
+
+# Open Office 365 documents
+~*
 
 # Latex artifacts
 *.aux
