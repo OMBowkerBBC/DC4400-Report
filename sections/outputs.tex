@@ -30,6 +30,12 @@
   \newpage
   \subsection{Final System Architecture}
 
+  \textbf{Experience} - 
+
+  \textbf{Reflection} -
+
+  \textbf{Action} -
+
   \begin{landscape}
     \begin{figure}[H]
       \centering
@@ -39,23 +45,41 @@
     \end{figure}
   \end{landscape}
 
-  \textbf{Experience} -
-  \textbf{Reflection} -
-  \textbf{Action} -
-
   \newpage
   \subsection{Dashboard}
 
+  \textbf{Experience} - Dashboards have been created using a tool called Grafana (2024) that pulls metrics (Amazon Web Services, 2024m) from AWS and
+  displays them all in one place. This allows us to check for anomalies and errors. Some metrics such as lambda run-times and invocations are provided by 
+  AWS but custom metrics have also been created to track errors, redis writes and schedule re-queues. Metrics are collected during the run time of the 
+  lambda using variations of the following code.
+
+   \begin{lstlisting}[caption=Code used to update a metric\, this variation tracks a schedule delete.]
+    monitoring.collect({
+      typeId: 'Processing',
+      result: 'throughput',
+      dimensions: {
+        ObjType: 'service_schedule',
+        EventType: 'Delete'
+      },
+      value: 1
+    })
+  \end{lstlisting}
+
+  \textbf{Reflection} - I've used metrics and dashboards throughout my time at the BBC so this is not something that is new to me. Usually the process of 
+  adding these metrics is done at the very end of development. This stops monitoring during development which is only a negative. Due to the use of a spike 
+  in this project we were able to know what metrics we wanted to track from the start and therefore added them along the way. This helped a lot as metrics on 
+  both test and live could be compared to one another as a way to validate that changes had occurred.
+  
+  \textbf{Action} - Continue to use spikes where necessary and put more thought into what kind of metrics we want to track before development starts.
+  This allows comparisons between different dashboards as well as saves one or multiple extra tasks at the end of development to create the metrics and
+  dashboards.
+
   \begin{figure}[H]
     \centering
-    \includegraphics[width=10cm]{assets/outputs/dashboard.png}
-    \caption{Created dashboard in Grafana (2024).}
+    \includegraphics[width=12cm]{assets/outputs/dashboard.png}
+    \caption{Created dashboard in Grafana.}
     \label{fig:dashboard}
   \end{figure}
-
-  \textbf{Experience} -
-  \textbf{Reflection} -
-  \textbf{Action} -
   
   \newpage
   \subsection{Code Base and Commits}
