@@ -54,7 +54,7 @@
   \end{figure}
 
   A pipe and filter architecture is achieved with the combination of AWS lambda (Amazon Web Services, 2024a) with updates being triggered by a publish/subscribe 
-  model (Somerville, 2021, pp.179) achieved through AWS' Simple Notification Service (SNS) (Amazon Web Services, 2024b) and Simple Queue Service (SQS) 
+  model (Somerville, 2021, p.179) achieved through AWS' Simple Notification Service (SNS) (Amazon Web Services, 2024b) and Simple Queue Service (SQS) 
   (Amazon Web Services, 2024c) with the former publishing and the latter subscribing. The lambda only runs when a message is published to the SQS, this triggers 
   the lambda and the pipeline begins precessing the new message.
 
