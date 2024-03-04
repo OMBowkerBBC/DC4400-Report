@@ -24,17 +24,47 @@
   \end{figure}
 
   \textbf{Experience} -
+
   \textbf{Reflection} -
+
   \textbf{Action} -
 
   \newpage
   \subsection{Final System Architecture}
 
-  \textbf{Experience} - 
+  \textbf{Experience} - A diagram of the final architecture has been created to help both current and new team members understand how the system works.
+  It's important to note that the old static lambda and associated schedule events and keyspaces will be removed over time as confidence in the new system 
+  grows. This diagram will be used in our internal documentation, such as technical designs and threat models.
 
-  \textbf{Reflection} -
+  \vspace{0.2cm}
+  \textbf{Reflection} - For this project we had an initial design that was created during the spike, which consisted of a publish/subscribe model using
+  AWS SNS and SQS (Amazon Web Services, 2024b and 2023c). Other than a separate queue to handle internal re-queuing of events and a garbage collector to 
+  extract and simplify some logic, the main architecture didn't change. I think this was a mistake. There were two keys issues the spike found with the design,
+  these being complexity of copying over data from the catalogue redis to the schedule redis and an inability to parallelise notifications. A solution to this 
+  was offered and in the \hyperref[sec:dynamo]{\textbf{next section}} of this report I will discuss it. 
 
-  \textbf{Action} -
+  The reasons for not going down this alternate approach was in part due to the spike taking longer than expected. Due to this there was no priority placed 
+  on further discovery of this alternative solution, as we wanted to start the work straight away. The copying over of data hurt development time due to 
+  it's complexity and caused countless bugs and errors that could have been avoided. 
+  
+  Part way through the project the development team realised that a mistake had been made but had to continue with the original solution. 
+  Speaking for myself, this lowered my morale and I found it very frustrating that time was not given to the alternate solution we had suggested during 
+  the spike.
+
+  Despite all this it's extremely important to note that the system works exactly as intended and meets all the criteria that was expected. Schedules are 
+  now much more up to date and thanks to comparison tests we are able to see that the output is correct.
+
+  \vspace{0.2cm}
+  \textbf{Action} - Time was not on our side for this project. There was a lot of pressure to start this project as soon as possible to finish off the 
+  schedule pipeline work and have it ready for partners to use.
+
+  Scope creep (Martins, 2023) and lack of time-boxing for the spike ate away at this time and meant later findings in the spike were not explored and we 
+  instead opted for the architecture that was similar to the catalogue pipeline. In the future spikes should be time-boxed to stop this creep, 
+  so we can review findings earlier and explore a different direction if one has been identified.
+
+  The alternate design also used new AWS services we hadn't used before, more time was needed to research this and understand it. Better spike planning 
+  would help, but more general training around AWS services and how to implement them could be encouraged through official training or through side-project
+  time (Robinson, 2018), which is something the BBC does offer.
 
   \begin{landscape}
     \begin{figure}[H]
@@ -70,6 +100,7 @@
   in this project we were able to know what metrics we wanted to track from the start and therefore added them along the way. This helped a lot as metrics on 
   both test and live could be compared to one another as a way to validate that changes had occurred.
   
+  \vspace{0.2cm}
   \textbf{Action} - Continue to use spikes where necessary and put more thought into what kind of metrics we want to track before development starts.
   This allows comparisons between different dashboards as well as saves one or multiple extra tasks at the end of development to create the metrics and
   dashboards.
@@ -92,7 +123,9 @@
   \end{figure}
 
   \textbf{Experience} -
+
   \textbf{Reflection} -
+
   \textbf{Action} -
 
 \newpage

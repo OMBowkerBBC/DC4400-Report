@@ -16,6 +16,7 @@ finally, the releasing of this new software to a live system depended on by part
 To finish off this report I will discuss three future upgrades that could be made to the schedules system to improve both its timeliness of data updates
 and a way that the system can be parallelised and simplified.
 
+\newpage
 \subsection{Notifications direct to partners}
 The new system relies on partners requesting data in order to update their UIs. This can mean that partners interfaces are still out of date, even 
 though our internal store is as up to date as possible.
@@ -50,6 +51,7 @@ This new schedule can then be used instead of the old one, without doing a full 
 
 \newpage
 \subsection{Parallelise the current system}
+\label{sec:dynamo}
 The new system is single-threaded and is unable to run in parallel due to shared memory between the threads needing to be managed. The piece of memory
 at fault here is the broadcast list held in episodes that link that episode to schedules in which it is referenced. The main problem here is redis 
 can't help us with any form of locking, unless we implement it ourselves, more on this can be found in the \hyperref[sec:storageSolutions]{\textbf{Research}}
