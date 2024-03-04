@@ -1,3 +1,36 @@
 \section{Executive Summary}
 
+\subsubsection*{Problem Statement}
+SpaceChimp is a team in the BBC Partnerships group that is responsible for providing schedules data for live programming for all BBC channels to 
+external partners. This system was designed to replace an external dependency the BBC had with a data provider. There is currently a system set up 
+that statically generates this data every 15 minutes. This can leave to outdated User Interfaces (UIs) for partners as the data can be up to 15 minutes 
+out of date, therefore displaying and linking users across the UK to the wrong or unavailable content.
+
+\subsubsection*{Proposed Solution}
+The current static system is to be updated to handle delta notifications that enable the updating and deleting of individual schedules instead of a 
+refresh of all schedules every 15 minutes. To achieve this upgrade multiple steps must be taken:
+
+\begin{itemize}
+  \item An initial design will be created with architecture and algorithm, this design can then be implemented in a software spike to discover 
+  problems and solutions.
+  \item The work done in the spike will drive the design of the real product. This will be broken down into tasks and feature sets that developers 
+  within the team will work on. Research will be done as part of this spike to find alternate routes where needed and will be presented in a spike 
+  document.
+  \item These tasks will go through the standard procedures of an enterprise team, development, testing and releasing. This development will include 
+  handling of delta notifications, a garbage collector and integration and comparison tests to help gain confidence in the new system.
+  \item Strategies to release the code into a live environment, used by 10s of millions of peoples, will be discussed and a release strategy for partners 
+  will be decided upon.
+\end{itemize}
+
+\subsubsection*{Value}
+This new system will allow the teams schedule offering to be as up to date as possible. When a partner requests the current data for a schedule to display in 
+their UI they will get the most up to date information possible. This work will also open up the possibility to send update notifications directly to partners
+so they no longer rely on requesting data at intervals, and can request only the data that has been updated since their last call.
+
+\subsubsection*{Final Thoughts and Next Steps}
+This new system will lower overall processing time and cost due to schedules only be updated and deleted when needed. It will help partners offer more up to 
+date UIs for their customers, help the BBC reach more people and reduce some overhead from external data providers. There is scope to extend this project 
+further in the future to include notifications directly to partners as well as research and designs into how the new single-threaded system could one day 
+be parallelised.
+
 \newpage

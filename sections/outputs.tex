@@ -12,6 +12,12 @@
   \subsection{Burn-up Charts}
   \label{sec:burnup}
 
+  \textbf{Experience} -
+
+  \textbf{Reflection} -
+
+  \textbf{Action} -
+
   \begin{figure}[H]
     \centering
     \includegraphics[width=6cm]{assets/outputs/burnups/01-16.png}
@@ -19,15 +25,10 @@
     \includegraphics[width=6cm]{assets/outputs/burnups/02-05.png}
     \includegraphics[width=6cm]{assets/outputs/burnups/02-14.png}
     \includegraphics[width=6cm]{assets/outputs/burnups/02-27.png}
+    \includegraphics[width=6cm]{assets/outputs/burnups/03-03.png}
     \caption{Burn-up charts throughout the project.}
     \label{fig:burnups}
   \end{figure}
-
-  \textbf{Experience} -
-
-  \textbf{Reflection} -
-
-  \textbf{Action} -
 
   \newpage
   \subsection{Final System Architecture}
@@ -133,6 +134,10 @@
   Overall I'm happy with the work we did as a team, we ended up beating the estimated finish time by some way that was predicted by the burn-up charts and 
   I'm also happy that despite having to do a lot of other non-dev related tasks, I still managed to get a lot of work committed to the project.
 
+  As a team we also tried to adhere to the Do not Repeat Yourself (DRY) principle throughout the project (Morais, 2023). This helps reduce number of lines of 
+  code and  also stops the need to change code in multiple places due to slight changes in implementation detail. This could be seen in our decisions around the 
+  coldstart in delta mode, as well as the shared API used to updated schedule items on catalogue update notifications.
+
   \vspace{0.2cm}
   \textbf{Action} - TypeScript would definitely help with code quality and other aspects in the future. However it is not worth re-writing everything at this
   stage and instead consider for new projects in the future. As previously mentioned continuous learning of new technologies is required to create the 
@@ -152,5 +157,5 @@
   \subsubsection{Visualtion of Changes}
   Due to the nature of the project, it's hard to see any visual output. Fot this reason I created a tool to show what notifications are coming 
   into the system. The code for this can be seen in \hyperref[sec:sec:AppendixG]{\textbf{Appendix G}}.
-  
+
 \newpage
