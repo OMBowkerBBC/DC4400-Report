@@ -97,11 +97,7 @@
 
   The reasons for not going down this alternate approach was in part due to the spike taking longer than expected. Due to this there was no priority placed 
   on further discovery of this alternative solution, as we wanted to start the work straight away. The copying over of data hurt development time due to 
-  it's complexity and caused countless bugs and errors that could have been avoided. 
-  
-  Part way through the project the development team realised that a mistake had been made but had to continue with the original solution. 
-  Speaking for myself, this lowered my morale and I found it very frustrating that time was not given to the alternate solution we had suggested during 
-  the spike.
+  it's complexity and caused countless bugs and errors that could have been avoided.
 
   Despite all this it's extremely important to note that the system works exactly as intended and meets all the criteria that was expected. Schedules are 
   now much more up to date and thanks to comparison tests we are able to see that the output is correct.
@@ -111,7 +107,7 @@
   schedule pipeline work and have it ready for partners to use.
 
   Scope creep (Martins, 2023) and lack of time-boxing for the spike ate away at this time and meant later findings in the spike were not explored and we 
-  instead opted for the architecture that was similar to the catalogue pipeline. In the future spikes should be time-boxed to stop this creep, 
+  instead opted for the architecture that was similar to the catalogue pipeline. Future spikes should be time-boxed to stop this creep, 
   so we can review findings earlier and explore a different direction if one has been identified.
 
   The alternate design also used new AWS services we hadn't used before, more time was needed to research this and understand it. Better spike planning 
@@ -130,7 +126,7 @@
   \newpage
   \subsection{Dashboard}
 
-  \textbf{Experience} - Dashboards have been created using a tool called Grafana (2024) that pulls metrics (Amazon Web Services, 2024m) from AWS and
+  \textbf{Experience} - Dashboards have been created using a tool called Grafana (2024) that pulls metrics (Amazon Web Services, 2024k) from AWS and
   displays them all in one place. This allows us to check for anomalies and errors. Some metrics such as lambda run-times and invocations are provided by 
   AWS but custom metrics have also been created to track errors, redis writes and schedule re-queues. Metrics are collected during the run time of the 
   lambda using variations of the following code.
@@ -167,7 +163,7 @@
   \newpage
   \subsection{Code Base and Commits}
 
-  \textbf{Experience} - The project was created using JavaScript, alongside Cloudformation (Amazon Wrb Services, 2024n) for AWS resource provisioning and 
+  \textbf{Experience} - The project was created using JavaScript, alongside Cloudformation (Amazon Wrb Services, 2024l) for AWS resource provisioning and 
   Jenkins (2024) pipelines for CI/CD. This is our typical stack for all projects in our team. All unit tests were written using the Jest 
   (Meta Platforms, Inc, 2024) framework and were done alongside the development of tasks.
 
