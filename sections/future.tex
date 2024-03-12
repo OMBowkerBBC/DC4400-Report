@@ -21,6 +21,7 @@ and a way that the system can be parallelised and simplified.
 The new system relies on partners requesting data in order to update their UIs. This can mean that partners interfaces are still out of date, even 
 though our internal store is as up to date as possible.
 
+\footnote{SE-K04 - The following diagram shows how businesses/partners interact with us and our data.}
 \begin{figure}[H]
   \centering
   \includegraphics[width=6cm]{diagrams/sequence/How Partners Remain Out of Date.png}
@@ -52,6 +53,8 @@ This new schedule can then be used instead of the old one, without doing a full 
 \newpage
 \subsection{Parallelise the current system}
 \label{sec:dynamo}
+\footnote{P4 - This section demonstrates how the research that I did could be used to create a better system in the future, including architectural designs 
+and code examples.}
 The new system is single-threaded and is unable to run in parallel due to shared memory between the threads needing to be managed. The piece of memory
 at fault here is the broadcast list held in episodes that link that episode to schedules in which it is referenced. The main problem here is redis 
 can't help us with any form of locking, unless we implement it ourselves, more on this can be found in the \hyperref[sec:storageSolutions]{\textbf{Research}}

@@ -109,6 +109,7 @@
 
 
   \paragraph{Schedule Updates}
+  \footnote{SE-K04 - The following section shows countless diagrams showing how the internal system functions.}
   Schedule updates refer to either the updating of a schedule, or the creation of a new schedule. There are some guards around whether the 
   schedule exists, then all catalogue data associated with the schedule is copied from the catalogue store to the schedule store, if it's is 
   not already there. This data can then be used to transform everything into the final schedule, where if any valid changes have been made, the 
@@ -172,6 +173,7 @@
     \label{fig:catalogueTriggeredScheduleUpdateClass}
   \end{figure}
 
+  \footnote{SE-K04 - Class diagram and parameter breakdown shows how shared modules can be planned in advance.}
   The method used the above interface and could be called the same way when updating an episode or an ancestor. The data includes:
   \begin{itemize}
     \item \textbf{scheduleIds} - Schedules in episodes broadcast lists.
