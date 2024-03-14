@@ -61,7 +61,7 @@
   schedules that an episode was referenced in.
 
   In addition to this, an architectural decision was made, before me taking on the project for this report, to have all schedule documents be in one keyspace,
-  this can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}. 
+  this can be seen in \hyperref[sec:AppendixE]{\textbf{Appendix E}}. 
   This making it easy to return all the relevant data on partner requests from our API and now with an additional field, making it so catalogue schemas would 
   not have to be changed. To do this all data relating to any current schedules offered must be copied over from the catalogue redis keyspace to the schedule
   redis keyspace, with the broadcast\_list field being added only to the schedules version of the object. The below figure shows how this works on a
@@ -108,8 +108,9 @@
   \end{table}
 
 
+  \newpage
   \paragraph{Schedule Updates}
-  \footnote{SE-K04 - The following section shows countless diagrams showing how the internal system functions.}
+  \footnote{\textbf{SE-K04} - The following section shows countless diagrams showing how the internal system functions.}
   Schedule updates refer to either the updating of a schedule, or the creation of a new schedule. There are some guards around whether the 
   schedule exists, then all catalogue data associated with the schedule is copied from the catalogue store to the schedule store, if it's is 
   not already there. This data can then be used to transform everything into the final schedule, where if any valid changes have been made, the 
@@ -133,6 +134,7 @@
     \label{fig:broadCastChangeActivity}
   \end{figure}
 
+  \newpage
   \paragraph{Schedule Deletes}
   Schedule deletes are one of the simpler events. Other than some basic guards to check objects exists in redis, all episode object referenced in 
   the schedules broadcasts have the schedule being deleted removed from their broadcast list. If this list is empty then that episode is also removed
@@ -145,9 +147,9 @@
     \label{fig:scheduleDeleteActivity}
   \end{figure}
 
+  \newpage
   \paragraph{Catalgoue Updates}
   Catalogue updates must also be processed by the schedule generator as they contain information about titling, programme descriptions and more.
-
 
   \begin{figure}[H]
     \centering
@@ -173,7 +175,8 @@
     \label{fig:catalogueTriggeredScheduleUpdateClass}
   \end{figure}
 
-  \footnote{SE-K04 - Class diagram and parameter breakdown shows how shared modules can be planned in advance.}
+  \footnote{\textbf{SE-K04} - Class diagram and parameter breakdown shows how shared modules can be planned in advance.}
+
   The method used the above interface and could be called the same way when updating an episode or an ancestor. The data includes:
   \begin{itemize}
     \item \textbf{scheduleIds} - Schedules in episodes broadcast lists.
@@ -303,6 +306,7 @@
 
   \newpage
   \subsubsection{End-to-end tests}
+  \footnote{\textbf{SE-S01} - This section discusses test coverage which is vital in enterprise code.}
   In this section I want to discuss the larger tests that were created as part of the project. These include end-to-end (e2e) and comparison tests.
   As a team we follow the pattern of tests layed out in the test pyramid.
 
@@ -345,7 +349,7 @@
     })
   \end{lstlisting} 
 
-  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixG]{\textbf{Appendix G}}.
+  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}.
   Currently these cover all possible scenarios, however have a lot of overlap and repetitiveness. In an ideal world a test would cover an individual
   use case (Daly, 2022). These 14 scenarios could then be a part of these use case tests which would speed how quickly they run, thus lowering the cost.
   These use cases could be the following:
@@ -378,9 +382,13 @@
   that these were either already being tested by unit tests or other parts of the testing library, or were unnecessary. This work was removed from 
   the board which can be seen in the burn-up charts in the \hyperref[sec:burnup]{\textbf{Outputs}} section.
 
-  Finally we created comparison tests, to compare the old static output and new delta/notification output. These tests could be compared to extract, 
-  transform, load (ETL) testing (Talend Inc, 2024). These tests will give us the confidence to switch our partners over to the new system. We decided
-  upon a 1 week time frame where these comparisons tests must pass continuously before we are happy to make the switch. On failure the logs from the test
-  will help us debug any current and future issues with the system.
+  \footnote{\textbf{SE-S01 \& SE-S05} - These tests ensure our data it to a high standard and we are not breaking partner integrations.}, 
+  Finally we created comparison tests to compare the old static output and new delta/notification output. These tests could be compared to extract, transform, 
+  load (ETL) testing (Talend Inc, 2024). These tests will give us the confidence to switch our partners over to the new system. We decided upon a 1 week time 
+  frame where these comparisons tests must pass continuously before we are happy to make the switch. 
+  \footnote{\textbf{SE-K02} - The basic inputs for this project were easy to determine, schedule and catalogue events. However there were a lot unknown unknowns 
+  relating to the order of when these events occurred. The comparison tests help highlight when something goes wrong and we can then debug the logs to 
+  find out what sequence of events unfolded for the data to be out of sync.}
+  On failure the logs from the test will help us debug any current and future issues with the system.
 
   \newpage

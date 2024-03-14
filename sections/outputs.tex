@@ -12,8 +12,8 @@
   \subsection{Burn-up Charts}
   \label{sec:burnup}
   
-  \footnote{SE-S05 - Burn up charts created helped to keep this project in specific time constraints and when the project would be completed.}
-  \footnote{SE-K06 - This shows how metrics can be gathered around the development lifecycle to track project progress and estimate finish dates.}
+  \footnote{\textbf{SE-S05} - Burn up charts created helped to keep this project in specific time constraints and when the project would be completed.}
+  \footnote{\textbf{SE-K06} - This shows how metrics can be gathered around the development lifecycle to track project progress and estimate finish dates.}
   \textbf{Experience} - Burn-up charts were generated throughout the project to help manage scope creep and issues, indicate progress made and help
   forecast a finish date (Atlassian, 2024a). This latter focus reason is especially important as this will allows us to give both partners and other 
   teams estimates on when new features/services plan to be released. They consist of three graphs, one to track total work, one to track work complete 
@@ -86,7 +86,9 @@
   \newpage
   \subsection{Final System Architecture}
 
-  \textbf{Experience} - A diagram of the final architecture has been created to help both current and new team members understand how the system works.
+  \textbf{Experience} - 
+  \footnote{\textbf{SE-S03} - This is one of the final outputs that show how the system was delivered using a wide range of technologies.}
+  A diagram of the final architecture has been created to help both current and new team members understand how the system works.
   It's important to note that the old static lambda and associated schedule events and keyspaces will be removed over time as confidence in the new system 
   grows. This diagram will be used in our internal documentation, such as technical designs and threat models.
 
@@ -128,7 +130,7 @@
   \newpage
   \subsection{Dashboard}
 
-  \footnote{SE-K06 - This shows how metrics can be gathered an used to monitor live software.}
+  \footnote{\textbf{SE-K06} - This shows how metrics can be gathered an used to monitor live software.}
   \textbf{Experience} - Dashboards have been created using a tool called Grafana (2024) that pulls metrics (Amazon Web Services, 2024k) from AWS and
   displays them all in one place. This allows us to check for anomalies and errors. Some metrics such as lambda run-times and invocations are provided by 
   AWS but custom metrics have also been created to track errors, redis writes and schedule re-queues. Metrics are collected during the run time of the 
@@ -166,7 +168,7 @@
   \newpage
   \subsection{Code Base and Commits}
 
-  \textbf{Experience} - The project was created using JavaScript, alongside Cloudformation (Amazon Wrb Services, 2024l) for AWS resource provisioning and 
+  \textbf{Experience} - The project was created using JavaScript, alongside Cloudformation (Amazon Web Services, 2024l) for AWS resource provisioning and 
   Jenkins (2024) pipelines for CI/CD. This is our typical stack for all projects in our team. All unit tests were written using the Jest 
   (Meta Platforms, Inc, 2024) framework and were done alongside the development of tasks.
 
@@ -176,6 +178,7 @@
   we usually do. In this aspect it could be argued that the right decision was made on architecture, as we could re-use a lot of code from elsewhere.
   However, as previously mentioned though it would be good to get more expertise and knowledge of newer/different solutions.
 
+  \footnote{\textbf{SE-K05} - The following suggests improvements as well as things we already do as a team to improve code quality in the future.}
   There has been some talks through retrospectives (Atlassian, 2024b) about using TypeScript (Microsoft, 2024) for our future projects. TypeScript has been 
   shown to lead to better code quality, less bugs and more understandable code (Merkel, 2021). In addition to this statically typed languages have been shown
   to help with bug fixes, especially around types (Okon and Hanenberg, 2016 and Kleinschmager et al, 2012).
