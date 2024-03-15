@@ -46,8 +46,26 @@
     \includepdf[pages=-,scale=.6]{documents/spike.pdf}
 
   \newpage
-  \subsection{Appendix E - Architectural decision for single schedules store}
-  \label{sec:AppendixE}
+  \subsection{Appendix E - Descriptions of Kanban stages used by SpaceChimp}
+    \label{sec:AppendixE}
+
+    \begin{itemize}
+      \item \textbf{Ready for dev} - Tasks that are ready to be picked up for development.
+      \item \textbf{Kick-off} - Tasks that need a test kick-off, which is not the same as the previous sections kick-off. This is where developers
+      discuss the task with a member of the test team and determine the Acceptance Criteria (ACs) and test approach for the task.
+      \item \textbf{In Progress} - Tasks that are being developed and worked on, this includes when code is being reviewed by other developers.
+      \item \textbf{In Test} - Task has been completed and changes are on the test environment. A member of the test team can now test the ticket
+      based on the previous discussions had in the kick-off. If things have changed during development, an additional hand-over with the test team 
+      is done to discuss the new changes.
+      \item \textbf{Releasing} - After a ticket task has been tested and has met the specified ACs, the task is moved to the releasing column signifying 
+      that is ready to be deployed to the live environment.
+      \item \textbf{Live monitoring} - Tasks in this column need to be monitored on the live environment to make sure that the change is functioning as expected.
+    \end{itemize}
+    
+
+  \newpage
+  \subsection{Appendix F - Architectural decision for single schedules store}
+  \label{sec:AppendixF}
 
   \subsection*{Architecture Decision Record 022: Single source for schedule data}
 
@@ -72,11 +90,6 @@
       \item Potential synchronisation issue when copying/deleting data across redis stores.
     \end{itemize}
 
-
-  \newpage
-  \subsection{Appendix F - !TODO! List of e2e test scenarios}
-    \label{sec:AppendixF}
-    \includepdf[pages=-,scale=.6]{documents/spike.pdf}
 
   \newpage
   \subsection{Appendix G - Burn-ups created through the projects life-cycle}

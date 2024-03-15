@@ -22,22 +22,9 @@
   \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{assets/kanbanBoard.png}
-    \caption{SpaceChimps Kanban board.}
+    \caption{SpaceChimps Kanban board, descriptions can be seen in \hyperref[sec:AppendixE]{\textbf{Appendix E}}.}
     \label{fig:kanbanBoard2}
   \end{figure}
-
-  \begin{itemize}
-    \item \textbf{Ready for dev} - Tasks that are ready to be picked up for development.
-    \item \textbf{Kick-off} - Tasks that need a test kick-off, which is not the same as the previous sections kick-off. This is where developers
-    discuss the task with a member of the test team and determine the Acceptance Criteria (ACs) and test approach for the task.
-    \item \textbf{In Progress} - Tasks that are being developed and worked on, this includes when code is being reviewed by other developers.
-    \item \textbf{In Test} - Task has been completed and changes are on the test environment. A member of the test team can now test the ticket
-    based on the previous discussions had in the kick-off. If things have changed during development, an additional hand-over with the test team 
-    is done to discuss the new changes.
-    \item \textbf{Releasing} - After a ticket task has been tested and has met the specified ACs, the task is moved to the releasing column signifying 
-    that is ready to be deployed to the live environment.
-    \item \textbf{Live monitoring} - Tasks in this column need to be monitored on the live environment to make sure that the change is functioning as expected.
-  \end{itemize}
 
   \begin{figure}[H]
     \centering
@@ -61,7 +48,7 @@
   schedules that an episode was referenced in.
 
   In addition to this, an architectural decision was made, before me taking on the project for this report, to have all schedule documents be in one keyspace,
-  this can be seen in \hyperref[sec:AppendixE]{\textbf{Appendix E}}. 
+  this can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}. 
   This making it easy to return all the relevant data on partner requests from our API and now with an additional field, making it so catalogue schemas would 
   not have to be changed. To do this all data relating to any current schedules offered must be copied over from the catalogue Redis keyspace to the schedule
   Redis keyspace, with the broadcast\_list field being added only to the schedule's version of the object. The below figure shows how this works on a
@@ -350,7 +337,7 @@
     })
   \end{lstlisting} 
 
-  Our current tests are written in \textit{scenarios} by our test team, a list of which can be seen in \hyperref[sec:AppendixF]{\textbf{Appendix F}}.
+  Our current tests are written in \textit{scenarios} by our test team.
   Currently these cover all possible scenarios, however, have a lot of overlap and repetitiveness. In an ideal world a test would cover an individual
   use case (Daly, 2022). These 14 scenarios could then be a part of these use case tests which would speed how quickly they run, thus lowering the cost.
   These use cases could be the following:
