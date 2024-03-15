@@ -43,6 +43,7 @@
   also have an \textit{'unfiltered'} catalogue that is not available to partners which contains all programme data with no availability limits.
   This unfiltered catalogue is what is used by the schedule pipeline to get its data about episode/series/brands within the schedule.
 
+  \newpage
   \subsection{Original Architecture}
   The original solution was composed of AWS services that created a pipe and filter architecture which transformed inputs into multiple outputs 
   (Somerville, 2016, pp.182-183) that can be used by partners. The figure below shows this architecture.
@@ -73,7 +74,8 @@
 
   This could leave partners with data up to 15 minutes out of date, dependant on when they retrieve the data, resulting in end users being shown incorrect
   schedules. 
-
+  
+  \newpage
     \subsubsection{Initial design solution}
     \footnote{\textbf{SE-K02} - This initial design helped us do a spike which led to the considerations for future work and immediate changes to this design.}
     The schedules pipeline also requires data from our catalogue pipeline, for titling, descriptions, viewer discretion warnings and subtitles. For this 

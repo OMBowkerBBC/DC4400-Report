@@ -110,6 +110,7 @@
     \label{fig:scheduleUpdateActivity}
   \end{figure}
 
+  \newpage
   There is an edge case specified in the above diagram, where a broadcast within a schedule changes the episode that it's going to play. 
   In this case we must either tidy up the old episodes broadcast list to no longer contain a reference to the schedule, or, if that episode no 
   longer references any schedules, remove it from the schedule store.
@@ -154,6 +155,8 @@
 
   Episodes contain a list of schedules that reference it. These schedules must be updated, so a method was created that could handle these
   schedule changes in a batch form.
+  \footnote{\textbf{SE-K04} - Class diagram and parameter breakdown shows how shared modules can be planned in advance to not create 
+  blockades in workflow.}
 
   \begin{figure}[H]
     \centering
@@ -161,9 +164,6 @@
     \caption{Class diagram showing the interface for the handling schedule updates triggered by catalogue notifications.}
     \label{fig:catalogueTriggeredScheduleUpdateClass}
   \end{figure}
-
-  \footnote{\textbf{SE-K04} - Class diagram and parameter breakdown shows how shared modules can be planned in advance to not create 
-  blockades in workflow.}
 
   The method used the above interface and could be called the same way when updating an episode or an ancestor. The data includes:
   \begin{itemize}
@@ -240,8 +240,10 @@
   Medium                                            & \multicolumn{1}{l|}{12.70}  & \multicolumn{1}{l|}{55.56}     & 19.05 \\ \hline
   High                                              & \multicolumn{1}{l|}{46.03}  & \multicolumn{1}{l|}{28.57}     & 14.29 \\ \hline
   \end{tabular}
+  \caption{Table showing likelihood to refactor based on on code complexity (Taibi et al, 2017).}
   \end{table}
 
+  \newpage
   For these reasons a new approach was thought of. The coldstart would tidy up the differences between its \textit{truth} the internal store, and 
   it's output. Anything not in the internal store is to be removed with the rest of the schedules being processed as if it was a delta notification 
   event.
@@ -356,7 +358,7 @@
 
   For this project we stuck with the scenarios, some had already been done in previous work which meant we only had tests to write for the new 
   notification functionality. After discussion with the test team these tests include
-  \footnote{\textbf{P5}- Discussion with the test team was had to determine what tests were needed as well as if some of the proposed, more continuously
+  \footnote{\textbf{P5} - Discussion with the test team was had to determine what tests were needed as well as if some of the proposed, more continuously
   e2e/integration tests could instead be done by cheaper unit tests.}:
 
   \begin{enumerate}
