@@ -5,7 +5,7 @@ This report has discussed the creation and upgrade of an enterprise system that 
 \begin{figure}[H]
   \centering
   \includegraphics[width=8cm]{assets/tvPlatformChart.png}
-  \caption{Chart showing freeview, a partner using the schedule feed, having the highest usage in UK homes (Statista, 2022).}
+  \caption{Chart showing TV platforms in use in homes, some of which are partners of the BBC (Statista, 2022).}
   \label{fig:tvPlatformChart}
 \end{figure}
 
@@ -18,7 +18,7 @@ and a way that the system can be parallelised and simplified.
 
 \newpage
 \subsection{Notifications direct to partners}
-The new system relies on partners requesting data in order to update their UIs. This can mean that partners interfaces are still out of date, even 
+The new system relies on partners requesting data to update their UIs. This can mean that partners interfaces are still out of date, even 
 though our internal store is as up to date as possible.
 \footnote{\textbf{SE-K04} - The following diagram shows how businesses/partners interact with us and our data.}
 
@@ -40,13 +40,13 @@ partners when an update occurs.
   \label{fig:changsetArchitecture}
 \end{figure}
 
-A notification ID is sent to a partners system, they then request a \textit{'changeset'} from our API which consists of only the data that has been updated.
+A notification ID is sent to a partner's system, they then request a \textit{'changeset'} from our API which consists of only the data that has been updated.
 This new schedule can then be used instead of the old one, without doing a full refresh of all the schedules a client wants access to.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=10cm]{diagrams/sequence/Changeset Lifecycle.png}
-  \caption{How an schedules can be kept up to date using changesets.}
+  \caption{How schedules can be kept up to date using changesets.}
   \label{fig:changsetLifecycle}
 \end{figure}
 
@@ -56,11 +56,11 @@ This new schedule can then be used instead of the old one, without doing a full 
 \footnote{\textbf{P4} - This section demonstrates how the research that I did could be used to create a better system in the future, including architectural designs 
 and code examples.}
 The new system is single-threaded and is unable to run in parallel due to shared memory between the threads needing to be managed. The piece of memory
-at fault here is the broadcast list held in episodes that link that episode to schedules in which it is referenced. The main problem here is redis 
+at fault here is the broadcast list held in episodes that link that episode to schedules in which it is referenced. The main problem here is Redis 
 can't help us with any form of locking, unless we implement it ourselves, more on this can be found in the \hyperref[sec:storageSolutions]{\textbf{Research}}
 section of this report.
 
-During this research DynamoDB came up as a possible solution due to it's capabilities in optimistic locking 
+During this research DynamoDB came up as a possible solution due to its capabilities in optimistic locking 
 (Kanungo, Morena, 2023 and Amazon Web Services 2024h). Using a column to monitor for changes, code could be written using Amazons Software Development
 Kit (SDK) (IBM Cloud Education, 2021) to ensure that no changes had occurred to the underlying data before writing to the table. 
 
@@ -69,18 +69,18 @@ Kit (SDK) (IBM Cloud Education, 2021) to ensure that no changes had occurred to 
   \begin{tabular}{|p{0.3\textwidth}|p{0.4\textwidth}|p{0.3\textwidth}|}
     \hline
     ID & Associations & Version \\ \hline
-    Unique identifier of of the object which would be used for quick lookups. 
+    Unique identifier of the object which would be used for quick lookups. 
     & For series and brand objects this would be a list of children (series/episode) that the object refers to. Foe episodes this would now be 
     where the broadcast list of related schedules is stored.
     & Number that is used to determine if changes have occurred using optimistic locking. This will be incremented by 1 every time a change happens. \\ \hline
   \end{tabular}
-  \caption{Example of dynamoDB table columns that could be used.}
+  \caption{Example of DynamoDB table columns that could be used.}
 \end{table}
 
 This table can be combined with the following SDK command to optimistically lock the data being edited. In this code \emph{ConditionExpression} is 
 the argument that determines what row is locking the record.
 
-\begin{lstlisting}[caption=SDK command sent to optimistically lock writes to the assocaitions column.]
+\begin{lstlisting}[caption=SDK command sent to optimistically lock writes to the association's column.]
   const updateCommand = new UpdateItemCommand({
     TableName: 'schedule-associations',
     Key: marshall({ id: objectIdToUpdate }),
@@ -93,7 +93,7 @@ the argument that determines what row is locking the record.
   })
   \end{lstlisting}
 
-  Finally this can all be integrated into a new architecture that is outlined below.
+  Finally, this can all be integrated into a new architecture that is outlined below.
 
   \begin{figure}[H]
     \centering
@@ -102,13 +102,13 @@ the argument that determines what row is locking the record.
     \label{fig:dynamoArchitecture}
   \end{figure}
 
-  The architecture looks very similar, with the addition of a dynamoDB table connected to the ingester. The ingester has access to the broadcast lists 
+  The architecture looks very similar, with the addition of a DynamoDB table connected to the ingester. The ingester has access to the broadcast lists 
   of schedules and can therefore write the mappings between different entities. This removes a lot of complexity from the schedule generator, which will 
   now look up the catalogue item it is updating and determine the schedules it needs to update from these mappings. 
 
   A further improvement that could be made here is to remove the copying of data from catalogue to schedule Redis. This again would drastically drop the 
-  complexity in the schedule generator and remove a large overhead that is not needed. The schedule generator could then retrieve it's titling data from 
-  the catalogue redis directly, as it had done previously.
+  complexity in the schedule generator and remove a large overhead that is not needed. The schedule generator could then retrieve its titling data from 
+  the catalogue Redis directly, as it had done previously.
 
   \newpage
   \subsection{Garbage Collection Consolidation}
@@ -117,10 +117,10 @@ the argument that determines what row is locking the record.
   A small change that could be made is for the garbage collector alone to handle removal of catalogue items, with the schedule generator only 
   removing schedules. This makes a lot of sense especially when applying the architectural principle of separation of concerns (SoC) which 
   \textit{'asserts that software should be separated based on the kinds of work it performs'} (Smith, 2023, ch. 3, p. 11). In addition to adhering 
-  to well known principles it would also simplify what has become a bloated and complex schedule generator.
+  to well-known principles it would also simplify what has become a bloated and complex schedule generator.
 
   The initial reason for removing the episode immediately upon deletion of schedule or the realisation that an episode was no longer referenced in 
-  any schedule was for timeliness for partners. However this doesn't make sense, partners would never receive this orphaned information anyway due to 
+  any schedule was for timeliness for partners. However, this doesn't make sense, partners would never receive this orphaned information anyway due to 
   how the data is collected for them on request.
 
   \begin{figure}[H]
